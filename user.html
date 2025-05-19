@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laundry App</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #e0e0e0;
+      color: #333;
+    }
+
+    /* Fixed Navbar */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background-color: #3b3b3b;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+      z-index: 1000;
+    }
+
+    .navbar button,
+    .navbar a {
+      background: none;
+      border: none;
+      color: #fff;
+      margin: 0 10px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: color 0.3s ease;
+    }
+
+    .navbar button:hover,
+    .navbar a:hover {
+      color: #a6a6a6;
+    }
+
+    .container {
+      display: flex;
+      margin-top: 60px;
+      height: calc(100vh - 60px);
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 240px;
+      background-color: #2b2b2b;
+      padding: 20px;
+      color: #d9d9d9;
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar h3 {
+      margin-bottom: 15px;
+      font-weight: bold;
+      text-transform: uppercase;
+      color: #a6a6a6;
+    }
+
+    .status-box,
+    .shop-card {
+      background-color: #414141;
+      padding: 15px;
+      margin-bottom: 12px;
+      border-radius: 4px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      font-weight: bold;
+    }
+
+    .status-box ul {
+      list-style-type: none;
+    }
+
+    .status-box li {
+      padding: 8px 0;
+      border-bottom: 1px solid #555;
+      color: #bfbfbf;
+    }
+
+    .shop-card:hover {
+      background-color: #5a5a5a;
+      transform: translateY(-2px);
+    }
+
+    /* Main Content */
+    .content {
+      flex: 1;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .item {
+      background-color: #545454;
+      border: 2px solid #696969;
+      border-radius: 6px;
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: #e0e0e0;
+      transition: transform 0.2s ease, background-color 0.3s;
+    }
+
+    .item:hover {
+      transform: scale(1.05);
+      background-color: #696969;
+    }
+
+    /* Toggle Sidebar */
+    .sidebar-hidden {
+      transform: translateX(-100%);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="navbar">
+    <button onclick="toggleSidebar()">☰</button>
+    <div>
+      <a href="#" onclick="loadContent('landing')">Landing</a>
+      <a href="#" onclick="loadContent('service')">Service</a>
+      <a href="#" onclick="loadContent('history')">History</a>
+    </div>
+    <span>👤</span>
+  </div>
+
+  <div class="container">
+    <div class="sidebar" id="sidebar">
+      <h3>Status</h3>
+      <div class="status-box">
+        <ul>
+          <li>Received</li>
+          <li>Processing</li>
+          <li>Completed</li>
+        </ul>
+      </div>
+      <h3>List Of Shops</h3>
+      <div id="list_shop">
+        <div class="shop-card">Sunrise Laundry</div>
+        <div class="shop-card">Sparkle Wash</div>
+        <div class="shop-card">Quick Cleaners</div>
+        <div class="shop-card">Fresh & Fold</div>
+      </div>
+    </div>
+
+    <div class="content" id="main-content">
+      <!-- Content will be loaded here -->
+    </div>
+  </div>
+
+  <script>
+    function loadContent(page) {
+      const content = {
+        landing: ['Cotton', 'Shari', 'Panjabi', 'Pant', 'Shani', '3-piece'],
+        service: ['Ironing', 'Washing', 'Dry Clean'],
+        history: ['Order #1', 'Order #2', 'Order #3']
+      };
+
+      const container = document.getElementById('main-content');
+      container.innerHTML = '';
+
+      content[page].forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'item';
+        div.textContent = item;
+        container.appendChild(div);
+      });
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.toggle('sidebar-hidden');
+    }
+
+    // Load default page
+    loadContent('landing');
+  </script>
+</body>
+
+</html>
