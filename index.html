@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laundry Smart</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+  <header>
+    <div class="logo">Laundry Smart</div>
+    <nav>
+      <ul>
+        <li><a href="javascript:void(0);" onclick="toggleFeatures()">Features</a></li>
+
+        <li><a href="login.html?tab=login"">Login</a></li>
+        <li><a href=" login.html?tab=register">Register</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h1>Smart Laundry, Hassle-Free</h1>
+    <p>Schedule, track, and manage your laundry service effortlessly.</p>
+    <a href="login.html?tab=register" class="cta-button">Get Started</a>
+  </section>
+
+  <section id="features" class="features">
+    <h2>Features</h2>
+    <div class="feature-grid">
+      <div class="feature">
+        <h3 id="das"><a href="new.html">🔐Registration & Login</a></h3>
+        <p>Easy onboarding with email or phone number.</p>
+      </div>
+      <div class="feature">
+        <h3>💳 Wallet System</h3>
+        <p>Rechargeable wallet with promo codes and full transaction history.</p>
+      </div>
+      <div class="feature">
+        <h3>📊 Dynamic Pricing</h3>
+        <p>Pricing adjusts by clothing type and delivery urgency.</p>
+      </div>
+      <div class="feature">
+        <h3>📅 Smart Scheduling</h3>
+        <p>Live calendar to pick delivery and pickup slots.</p>
+      </div>
+      <div class="feature">
+        <h3>📦 Order Tracking</h3>
+        <p>Track progress: picked up, washed, dispatched, and delivered.</p>
+      </div>
+      <div class="feature">
+        <h3>🔔 Notifications</h3>
+        <p>SMS, email, and in-app notifications in real-time.</p>
+      </div>
+      <div class="feature">
+        <h3>🤖 Chatbot Support</h3>
+        <p>24/7 AI chatbot for help and inquiries.</p>
+      </div>
+      <div class="feature">
+        <h3>🛠️ Admin Dashboard</h3>
+        <p>Admins manage orders, users, and payment issues in real-time.</p>
+      </div>
+      <div class="feature">
+        <h3>📈 Analytics</h3>
+        <p>Monitor service performance and customer growth data.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Laundry Smart. All rights reserved.</p>
+  </footer>
+
+  <script>
+    function toggleFeatures() {
+      const featureContent = document.getElementById("features");
+      if (featureContent.style.display === "none" || featureContent.style.display === "") {
+        featureContent.style.display = "block";
+      } else {
+        featureContent.style.display = "none";
+      }
+    }
+  </script>
+</body>
+
+</html>

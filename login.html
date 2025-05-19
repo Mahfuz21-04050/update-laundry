@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laundry Smart | Login & Register</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="loginregis.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="tab-header">
+      <div class="tab-link active" data-tab="login">Login</div>
+      <div class="tab-link" data-tab="register">Register</div>
+    </div>
+
+    <!-- Login Form -->
+    <div class="tab-content active" id="login">
+      <h2><i class="fas fa-sign-in-alt"></i> Login</h2>
+      <form>
+        <div class="input-group">
+          <i class="fas fa-user"></i>
+          <input type="text" placeholder="Enter Username" required>
+        </div>
+        <div class="input-group">
+          <i class="fas fa-lock"></i>
+          <input type="password" placeholder="Enter Password" required>
+        </div>
+        <button type="submit">Login</button>
+        <p>Don't have an account? <a href="#" data-tab="register">Register Now</a></p>
+      </form>
+    </div>
+
+    <!-- Registration Form -->
+    <div class="tab-content" id="register">
+      <h2><i class="fas fa-user-plus"></i> Register</h2>
+      <form>
+        <div class="input-group">
+          <i class="fas fa-user"></i>
+          <input type="text" placeholder="Full Name" required>
+        </div>
+        <div class="input-group">
+          <i class="fas fa-envelope"></i>
+          <input type="email" placeholder="Email Address" required>
+        </div>
+        <div class="input-group">
+          <i class="fas fa-phone"></i>
+          <input type="text" placeholder="Phone Number" required>
+        </div>
+        <div class="input-group">
+          <i class="fas fa-lock"></i>
+          <input type="password" placeholder="Create Password" required>
+        </div>
+        <button type="submit">Register</button>
+        <p>Already have an account? <a href="#" data-tab="login">Login Here</a></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- <script>
+    document.querySelectorAll('[data-tab]').forEach(tab => {
+      tab.addEventListener('click', function () {
+        const target = this.getAttribute('data-tab');
+
+        document.querySelectorAll('.tab-link').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+
+        this.classList.add('active');
+        document.getElementById(target).classList.add('active');
+      });
+    });
+  </script> -->
+  <script>
+    // Tab click handle
+    document.querySelectorAll('[data-tab]').forEach(tab => {
+      tab.addEventListener('click', function () {
+        const target = this.getAttribute('data-tab');
+
+        document.querySelectorAll('.tab-link').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+
+        this.classList.add('active');
+        document.getElementById(target).classList.add('active');
+      });
+    });
+
+    // ✅ Check URL query parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const tab = urlParams.get('tab'); // login / register
+
+    if (tab === 'register' || tab === 'login') {
+      // Remove default active classes
+      document.querySelectorAll('.tab-link').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+
+      // Set active tab and content
+      document.querySelector(`.tab-link[data-tab="${tab}"]`).classList.add('active');
+      document.getElementById(tab).classList.add('active');
+    }
+  </script>
+
+</body>
+
+</html>
