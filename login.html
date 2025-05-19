@@ -19,7 +19,7 @@
     <!-- Login Form -->
     <div class="tab-content active" id="login">
       <h2><i class="fas fa-sign-in-alt"></i> Login</h2>
-      <form>
+      <form id="loginForm">
         <div class="input-group">
           <i class="fas fa-user"></i>
           <input type="text" placeholder="Enter Username" required>
@@ -59,19 +59,6 @@
     </div>
   </div>
 
-  <!-- <script>
-    document.querySelectorAll('[data-tab]').forEach(tab => {
-      tab.addEventListener('click', function () {
-        const target = this.getAttribute('data-tab');
-
-        document.querySelectorAll('.tab-link').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-
-        this.classList.add('active');
-        document.getElementById(target).classList.add('active');
-      });
-    });
-  </script> -->
   <script>
     // Tab click handle
     document.querySelectorAll('[data-tab]').forEach(tab => {
@@ -99,6 +86,13 @@
       document.querySelector(`.tab-link[data-tab="${tab}"]`).classList.add('active');
       document.getElementById(tab).classList.add('active');
     }
+
+    // ✅ Login form submit handle → Redirect to index.html
+    const loginForm = document.getElementById('loginForm');
+    loginForm.addEventListener('submit', function (e) {
+      e.preventDefault(); // Prevent actual form submission
+      window.location.href = 'index.html'; // Redirect to index.html
+    });
   </script>
 
 </body>
