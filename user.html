@@ -3,131 +3,179 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Laundry App</title>
+  <title>Laundry Service</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    html {
+      scroll-behavior: smooth;
     }
 
     body {
-      font-family: 'Roboto', sans-serif;
-      background-color: #e0e0e0;
-      color: #333;
+      margin: 0;
+      font-family: Arial, sans-serif;
     }
 
-    /* Fixed Navbar */
     .navbar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 60px;
-      background-color: #3b3b3b;
-      color: #fff;
+      background-color: #1abc9c;
+      padding: 10px 20px;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      padding: 0 20px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-      z-index: 1000;
+      align-items: center;
+      flex-wrap: wrap;
     }
 
-    .navbar button,
     .navbar a {
-      background: none;
-      border: none;
-      color: #fff;
-      margin: 0 10px;
-      cursor: pointer;
-      font-size: 16px;
-      transition: color 0.3s ease;
-    }
-
-    .navbar button:hover,
-    .navbar a:hover {
-      color: #a6a6a6;
+      color: white;
+      margin-right: 15px;
+      text-decoration: none;
+      font-weight: bold;
     }
 
     .container {
       display: flex;
-      margin-top: 60px;
-      height: calc(100vh - 60px);
+      flex-wrap: wrap;
     }
 
-    /* Sidebar */
     .sidebar {
-      width: 240px;
-      background-color: #2b2b2b;
+      background-color: #dff9fb;
+      width: 200px;
       padding: 20px;
-      color: #d9d9d9;
-      transition: transform 0.3s ease;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
     }
 
     .sidebar h3 {
-      margin-bottom: 15px;
-      font-weight: bold;
-      text-transform: uppercase;
-      color: #a6a6a6;
+      margin-bottom: 10px;
     }
 
-    .status-box,
-    .shop-card {
-      background-color: #414141;
-      padding: 15px;
-      margin-bottom: 12px;
-      border-radius: 4px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-      font-weight: bold;
+    .sidebar button {
+      display: block;
+      margin: 10px 0;
+      padding: 10px;
+      width: 100%;
+      border: none;
+      background-color: white;
+      border-radius: 6px;
+      box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
     }
 
-    .status-box ul {
-      list-style-type: none;
-    }
-
-    .status-box li {
-      padding: 8px 0;
-      border-bottom: 1px solid #555;
-      color: #bfbfbf;
-    }
-
-    .shop-card:hover {
-      background-color: #5a5a5a;
-      transform: translateY(-2px);
-    }
-
-    /* Main Content */
-    .content {
+    .main {
       flex: 1;
       padding: 20px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
-    }
-
-    .item {
-      background-color: #545454;
-      border: 2px solid #696969;
-      border-radius: 6px;
-      height: 100px;
       display: flex;
-      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
       justify-content: center;
+    }
+
+    .item-card {
+      border: 1px solid red;
+      border-radius: 10px;
+      width: 200px;
+      text-align: center;
+      padding: 10px;
+    }
+
+    .item-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .item-card input {
+      margin-top: 10px;
+      padding: 5px;
+      width: 80%;
+      border-radius: 5px;
+      border: 1px solid gray;
+    }
+
+    .item-card button {
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      margin-top: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .submit-area {
+      text-align: center;
+      margin: 20px;
+    }
+
+    .submit-btn {
+      background-color: #27ae60;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    /* Modal Style */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 10;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 5% auto;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 500px;
+      font-size: 16px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
       font-weight: bold;
-      color: #e0e0e0;
-      transition: transform 0.2s ease, background-color 0.3s;
+      cursor: pointer;
     }
 
-    .item:hover {
-      transform: scale(1.05);
-      background-color: #696969;
+    .input-field {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
     }
 
-    /* Toggle Sidebar */
-    .sidebar-hidden {
-      transform: translateX(-100%);
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        box-shadow: none;
+      }
+
+      .main {
+        justify-content: center;
+      }
+
+      .item-card {
+        width: 90%;
+      }
+
+      .modal-content {
+        width: 95%;
+      }
     }
   </style>
 </head>
@@ -135,66 +183,124 @@
 <body>
 
   <div class="navbar">
-    <button onclick="toggleSidebar()">☰</button>
     <div>
-      <a href="#" onclick="loadContent('landing')">Landing</a>
-      <a href="#" onclick="loadContent('service')">Service</a>
-      <a href="#" onclick="loadContent('history')">History</a>
+      <a href="#landing">Landing</a>
+      <a href="#service">Service</a>
+      <a href="#history">History</a>
     </div>
-    <span>👤</span>
   </div>
 
-  <div class="container">
-    <div class="sidebar" id="sidebar">
+  <!-- Landing Section -->
+  <section id="landing" style="padding: 40px; text-align: center; background-color: #f9f9f9;">
+    <h1>Welcome to Our Laundry Service</h1>
+    <p>Clean clothes, happy life!</p>
+  </section>
+
+  <!-- Service Section -->
+  <section id="service" class="container">
+    <div class="sidebar">
       <h3>Status</h3>
-      <div class="status-box">
-        <ul>
-          <li>Received</li>
-          <li>Processing</li>
-          <li>Completed</li>
-        </ul>
-      </div>
+      <p>Received</p>
       <h3>List Of Shops</h3>
-      <div id="list_shop">
-        <div class="shop-card">Sunrise Laundry</div>
-        <div class="shop-card">Sparkle Wash</div>
-        <div class="shop-card">Quick Cleaners</div>
-        <div class="shop-card">Fresh & Fold</div>
-      </div>
+      <button>Sunrise Laundry</button>
+      <button>Sparkle Wash</button>
+      <button>Quick Cleaners</button>
+      <button>Fresh & Fold</button>
     </div>
 
-    <div class="content" id="main-content">
-      <!-- Content will be loaded here -->
+    <div class="main">
+      <div class="item-card">
+        <img src="cotton.png" alt="Cotton">
+        <p><strong>Cotton</strong></p>
+        <input type="number" placeholder="quantity :" data-name="Cotton" data-price="30">
+        <button>Done</button>
+      </div>
+
+      <div class="item-card">
+        <img src="sarri.png" alt="Shari">
+        <p><strong>Shari</strong></p>
+        <input type="number" placeholder="quantity :" data-name="Shari" data-price="50">
+        <button>Done</button>
+      </div>
+
+      <div class="item-card">
+        <img src="panjabi.png" alt="Panjabi">
+        <p><strong>Panjabi</strong></p>
+        <input type="number" placeholder="quantity :" data-name="Panjabi" data-price="60">
+        <button>Done</button>
+      </div>
+
+      <div class="item-card">
+        <img src="p.png" alt="Pant">
+        <p><strong>Pant</strong></p>
+        <input type="number" placeholder="quantity :" data-name="Pant" data-price="40">
+        <button>Done</button>
+      </div>
+
+      <div class="item-card">
+        <img src="tshirt.png" alt="Shirt">
+        <p><strong>Shirt</strong></p>
+        <input type="number" placeholder="quantity :" data-name="Shirt" data-price="35">
+        <button>Done</button>
+      </div>
+
+      <div class="item-card">
+        <img src="3pice.png" alt="3-piece">
+        <p><strong>3-piece</strong></p>
+        <input type="number" placeholder="quantity :" data-name="3-piece" data-price="80">
+        <button>Done</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Submit Button -->
+  <div class="submit-area">
+    <button class="submit-btn" onclick="generateBill()">Select Shop & Submit</button>
+  </div>
+
+  <!-- History Section -->
+  <section id="history" style="padding: 40px; background-color: #ecf0f1; text-align: center;">
+    <h2>🧺 Past Orders</h2>
+    <p>You don't have any previous orders yet.</p>
+  </section>
+
+  <!-- Modal for Bill -->
+  <div id="billModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="document.getElementById('billModal').style.display='none'">&times;</span>
+      <h2>🧾 Order Bill</h2>
+      <input type="text" id="customerName" class="input-field" placeholder="Enter your name">
+      <input type="text" id="customerPhone" class="input-field" placeholder="Enter mobile number">
+      <input type="text" id="customerAddress" class="input-field" placeholder="Enter address">
+      <div id="billDetails" style="margin-top: 15px;"></div>
     </div>
   </div>
 
   <script>
-    function loadContent(page) {
-      const content = {
-        landing: ['Cotton', 'Shari', 'Panjabi', 'Pant', 'Shani', '3-piece'],
-        service: ['Ironing', 'Washing', 'Dry Clean'],
-        history: ['Order #1', 'Order #2', 'Order #3']
-      };
+    function generateBill() {
+      const inputs = document.querySelectorAll('.item-card input');
+      let billHTML = "<table style='width:100%; margin-top:10px; border-collapse: collapse;'>"
+        + "<tr><th style='text-align:left;'>Item</th><th>Qty</th><th>Price</th><th>Total</th></tr>";
+      let total = 0;
 
-      const container = document.getElementById('main-content');
-      container.innerHTML = '';
-
-      content[page].forEach(item => {
-        const div = document.createElement('div');
-        div.className = 'item';
-        div.textContent = item;
-        container.appendChild(div);
+      inputs.forEach(input => {
+        const qty = parseInt(input.value);
+        const name = input.dataset.name;
+        const price = parseInt(input.dataset.price);
+        if (!isNaN(qty) && qty > 0) {
+          const subtotal = qty * price;
+          total += subtotal;
+          billHTML += `<tr><td>${name}</td><td>${qty}</td><td>${price}৳</td><td>${subtotal}৳</td></tr>`;
+        }
       });
-    }
 
-    function toggleSidebar() {
-      const sidebar = document.getElementById('sidebar');
-      sidebar.classList.toggle('sidebar-hidden');
-    }
+      billHTML += `<tr><td colspan="3" style="text-align:right;"><strong>Grand Total:</strong></td><td><strong>${total}৳</strong></td></tr></table>`;
 
-    // Load default page
-    loadContent('landing');
+      document.getElementById('billDetails').innerHTML = billHTML;
+      document.getElementById('billModal').style.display = 'block';
+    }
   </script>
+
 </body>
 
 </html>
