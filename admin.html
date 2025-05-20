@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .card {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+  <div class="flex flex-col md:flex-row">
+    <!-- Sidebar -->
+    <div class="w-full md:w-64 bg-[#1e272e] text-white p-6 shadow-lg">
+      <h2 class="text-2xl font-bold mb-6 tracking-wide">🔧 Admin Panel</h2>
+      <nav class="space-y-2">
+        <button onclick="toggleSection('priceSection')"
+          class="w-full text-left py-2 px-4 bg-[#2f3640] rounded hover:bg-[#3d3d3d]">Set Prices</button>
+        <button onclick="toggleSection('orderSection')"
+          class="w-full text-left py-2 px-4 bg-[#2f3640] rounded hover:bg-[#3d3d3d]">Orders</button>
+        <a href="#" class="block py-2 px-4 bg-[#2f3640] rounded hover:bg-[#3d3d3d]">Users</a>
+      </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 p-6 space-y-10">
+
+      <!-- Product Pricing Section -->
+      <div id="priceSection">
+        <h1 class="text-3xl font-bold text-gray-800 mb-6">🧺 Set Product Prices</h1>
+        <div class="flex flex-wrap gap-6 justify-start" id="productList"></div>
+
+        <!-- Product Card Template -->
+        <template id="productTemplate">
+          <div class="card bg-white rounded-2xl shadow-md p-4 w-full sm:w-[300px] flex items-start flex-col gap-2">
+            <div class="flex items-center gap-4 w-full">
+              <img class="product-img w-20 h-20 rounded-lg border object-cover" src="" alt="Product">
+              <div class="flex-1">
+                <h3 class="product-name text-lg font-semibold text-gray-800"></h3>
+                <p class="current-price text-sm text-gray-600">৳ <span>0</span></p>
+              </div>
+            </div>
+            <div class="price-input hidden w-full">
+              <input type="number" class="price-field mt-2 p-2 border rounded w-full" placeholder="Enter New Price">
+              <button class="set-price-btn mt-2 bg-blue-600 text-white px-4 py-1 rounded">Finish</button>
+            </div>
+            <button class="edit-btn text-sm text-blue-600 hover:underline self-end">Set Price</button>
+          </div>
+        </template>
+      </div>
+
+      <!-- Order List -->
+      <div id="orderSection" style="display:none;">
+        <h2 class="text-3xl font-bold mb-6 text-gray-800">📦 Orders Overview</h2>
+        <div class="overflow-x-auto bg-white rounded-2xl shadow-lg">
+          <table class="min-w-full text-sm text-left">
+            <thead class="bg-gray-200 text-gray-700">
+              <tr>
+                <th class="py-3 px-4">Customer Name</th>
+                <th class="py-3 px-4">Mobile</th>
+                <th class="py-3 px-4">Order Date</th>
+                <th class="py-3 px-4">Pickup Time</th>
+                <th class="py-3 px-4">Location</th>
+                <th class="py-3 px-4">Items</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-t">
+                <td class="py-3 px-4">Rakib Hasan</td>
+                <td class="py-3 px-4">017xxxxxxxx</td>
+                <td class="py-3 px-4">2025-05-20</td>
+                <td class="py-3 px-4">3:00 PM</td>
+                <td class="py-3 px-4">Dhanmondi, Dhaka</td>
+                <td class="py-3 px-4">2 Cotton, 1 Shari</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const products = [
+      { name: "Cotton", img: "cotton.png", price: 100 },
+      { name: "Shari", img: "sarri.png", price: 120 },
+      { name: "Panjabi", img: "panjabi.png", price: 140 },
+      { name: "Pant", img: "p.png", price: 90 },
+      { name: "Shirt", img: "tshirt.png", price: 80 },
+      { name: "3-piece", img: "3pice.png", price: 200 }
+    ];
+
+    const productListEl = document.getElementById('productList');
+    const template = document.getElementById('productTemplate').content;
+
+    products.forEach(product => {
+      const clone = document.importNode(template, true);
+      clone.querySelector('.product-img').src = product.img;
+      clone.querySelector('.product-img').alt = product.name;
+      clone.querySelector('.product-name').textContent = product.name;
+      clone.querySelector('.current-price span').textContent = product.price;
+
+      const priceInput = clone.querySelector('.price-input');
+      const setPriceBtn = clone.querySelector('.set-price-btn');
+      const editBtn = clone.querySelector('.edit-btn');
+      const priceField = clone.querySelector('.price-field');
+      const priceDisplay = clone.querySelector('.current-price span');
+
+      editBtn.addEventListener('click', () => {
+        priceInput.classList.remove('hidden');
+        priceField.value = product.price;
+      });
+
+      setPriceBtn.addEventListener('click', () => {
+        const newPrice = parseFloat(priceField.value);
+        if (!isNaN(newPrice) && newPrice > 0) {
+          product.price = newPrice;
+          priceDisplay.textContent = newPrice;
+          priceInput.classList.add('hidden');
+        }
+      });
+
+      productListEl.appendChild(clone);
+    });
+
+    function toggleSection(sectionId) {
+      const section = document.getElementById(sectionId);
+      section.style.display = section.style.display === 'none' ? 'block' : 'none';
+    }
+  </script>
+</body>
+
+</html>
