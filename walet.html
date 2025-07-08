@@ -194,6 +194,17 @@
       <button class="cancel" onclick="cancelBkash()">Cancel</button>
     </div>
 
+
+
+    <!-- OTP input step (after Confirm) -->
+    <div id="otpSection" class="bkash-form" style="display: none;">
+      <h3>Enter OTP</h3>
+      <p>We’ve sent a 6-digit OTP to your number.</p>
+      <input type="text" id="otpInput" placeholder="Enter OTP">
+      <button class="confirm" onclick="verifyOtp()">Verify</button>
+      <button class="cancel" onclick="cancelOtp()">Cancel</button>
+    </div>
+
     <div class="history">
       <h3>Transaction History</h3>
       <ul id="history">
@@ -203,14 +214,6 @@
   </div>
 
 
-  <!-- OTP input step (after Confirm) -->
-  <div id="otpSection" class="bkash-form" style="display: none;">
-    <h3>Enter OTP</h3>
-    <p>We’ve sent a 6-digit OTP to your number.</p>
-    <input type="text" id="otpInput" placeholder="Enter OTP">
-    <button class="confirm" onclick="verifyOtp()">Verify</button>
-    <button class="cancel" onclick="cancelOtp()">Cancel</button>
-  </div>
 
 
   <script>
