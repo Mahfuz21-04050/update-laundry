@@ -1,87 +1,701 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Laundry Smart</title>
-  <link rel="stylesheet" href="index.css">
+  <title>Smart Laundry App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- FontAwesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #e3f0ff 0%, #f5fff7 100%);
+      margin: 0;
+      padding: 0;
+      color: #21243d;
+    }
+
+    /* Navbar Styles */
+    .navbar {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      z-index: 100;
+      background: rgba(10, 110, 189, 0.25);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 16px rgba(10, 110, 189, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 36px;
+      border-bottom: 1px solid rgba(10, 110, 189, 0.08);
+      transition: background 0.3s;
+    }
+
+    .navbar .logo {
+      font-size: 2em;
+      font-weight: bold;
+      color: #0a6ebd;
+      letter-spacing: 2px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .navbar .logo i {
+      color: #18a558;
+      font-size: 1.2em;
+    }
+
+    .navbar .search-bar {
+      flex: 1;
+      margin: 0 28px;
+      max-width: 440px;
+    }
+
+    .navbar .search-bar input {
+      width: 100%;
+      padding: 10px 18px;
+      border-radius: 24px;
+      border: none;
+      font-size: 1.05em;
+      background: #f5f7fa;
+      box-shadow: 0 1px 4px rgba(10, 110, 189, 0.06);
+      outline: none;
+    }
+
+    .navbar .nav-links {
+      display: flex;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #0a6ebd;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 18px;
+      padding: 8px 18px;
+      font-size: 1.07em;
+      font-weight: 500;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+      box-shadow: 0 1px 4px rgba(10, 110, 189, 0.07);
+      border: none;
+      cursor: pointer;
+      outline: none;
+    }
+
+    .nav-link:hover,
+    .nav-link:focus {
+      background: #0a6ebd;
+      color: #fff;
+      box-shadow: 0 2px 12px rgba(10, 110, 189, 0.15);
+    }
+
+    .nav-action {
+      background: linear-gradient(90deg, #0a6ebd 70%, #18a558 100%);
+      color: #fff;
+      border: none;
+      border-radius: 22px;
+      padding: 10px 28px;
+      font-weight: bold;
+      font-size: 1.08em;
+      box-shadow: 0 2px 8px rgba(10, 110, 189, 0.10);
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      margin-left: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-action:hover {
+      background: linear-gradient(90deg, #085a96 70%, #18a558 100%);
+      color: #ffe082;
+    }
+
+    /* Page Layout */
+    .container {
+      display: flex;
+      max-width: 1240px;
+      margin: 40px auto 0 auto;
+      gap: 36px;
+      padding: 0 18px;
+    }
+
+
+    .sidebar {
+      min-width: 240px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 12px rgba(10, 110, 189, 0.05);
+      padding: 26px 0;
+      height: fit-content;
+    }
+
+    .sidebar h3 {
+      margin: 0 0 14px 28px;
+      font-size: 1.15em;
+      color: #0a6ebd;
+      letter-spacing: 0.5px;
+    }
+
+    .categories {
+      list-style: none;
+      padding: 0 28px;
+      margin: 0;
+    }
+
+    .categories li {
+      margin: 12px 0;
+      color: #333;
+      cursor: pointer;
+      transition: color 0.2s;
+      font-size: 1.05em;
+    }
+
+    .categories li:hover {
+      color: #0a6ebd;
+      font-weight: bold;
+    }
+
+    .main {
+      flex: 1;
+    }
+
+    .hero {
+      background: linear-gradient(90deg, #e0f7fa 60%, #fff 100%);
+      border-radius: 14px;
+      padding: 46px 36px 36px 36px;
+      margin-bottom: 32px;
+      box-shadow: 0 4px 18px rgba(10, 110, 189, 0.09);
+      position: relative;
+      overflow: hidden;
+      min-height: 250px;
+    }
+
+    .hero-title {
+      font-size: 2.3em;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #0a6ebd;
+      letter-spacing: 1px;
+    }
+
+    .hero-sub {
+      font-size: 1.17em;
+      margin-bottom: 22px;
+      color: #333;
+    }
+
+    .cta-btn {
+      background: linear-gradient(90deg, #0a6ebd 65%, #18a558 100%);
+      color: #fff;
+      padding: 14px 36px;
+      border: none;
+      border-radius: 26px;
+      font-size: 1.13em;
+      font-weight: bold;
+      cursor: pointer;
+      margin-bottom: 22px;
+      transition: background 0.2s;
+      box-shadow: 0 2px 8px rgba(10, 110, 189, 0.08);
+    }
+
+    .cta-btn:hover {
+      background: linear-gradient(90deg, #085a96 60%, #18a558 100%);
+    }
+
+    .hero-icons {
+      display: flex;
+      gap: 94px;
+      margin-top: 22px;
+    }
+
+    .hero-icon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 2.7em;
+      color: #0a6ebd;
+      background: #f0f8ff;
+      border-radius: 50%;
+      width: 64px;
+      height: 64px;
+      justify-content: center;
+      box-shadow: 0 2px 6px rgba(10, 110, 189, 0.06);
+    }
+
+    .hero-icon span {
+      font-size: 0.73em;
+      color: #444;
+      margin-top: 8px;
+      font-weight: 500;
+    }
+
+    .suggestions {
+      display: flex;
+      gap: 18px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+
+    .suggestion {
+      background: #e3f2fd;
+      color: #0a6ebd;
+      padding: 12px 20px;
+      border-radius: 20px;
+      font-size: 1.05em;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: background 0.2s;
+      font-weight: 500;
+    }
+
+    .suggestion:hover {
+      background: #bbdefb;
+    }
+
+    .features,
+    .reviews,
+    .how-it-works {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(10, 110, 189, 0.04);
+      padding: 26px 22px;
+      margin-bottom: 26px;
+    }
+
+    .features-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 14px;
+    }
+
+    .features-table th,
+    .features-table td {
+      border: 1px solid #e0e0e0;
+      padding: 12px 10px;
+      text-align: left;
+    }
+
+    .features-table th {
+      background: #f1f8e9;
+      color: #0a6ebd;
+      font-size: 1.06em;
+    }
+
+    .reviews blockquote {
+      margin: 0 0 12px 0;
+      font-style: italic;
+      color: #444;
+      border-left: 4px solid #0a6ebd;
+      padding-left: 14px;
+    }
+
+    .reviews cite {
+      color: #0a6ebd;
+      font-size: 1em;
+    }
+
+    .how-it-works ol {
+      margin: 0 0 0 22px;
+      padding: 0;
+      color: #333;
+      font-size: 1.05em;
+    }
+
+    .footer {
+      background: #0a6ebd;
+      color: #fff;
+      text-align: center;
+      padding: 20px 0 12px 0;
+      margin-top: 48px;
+      font-size: 1.05em;
+    }
+
+    /* Modal Styles */
+    .modal-bg {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(33, 36, 61, 0.28);
+      justify-content: center;
+      align-items: center;
+      transition: background 0.2s;
+    }
+
+    .modal-bg.active {
+      display: flex;
+    }
+
+    .modal {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 6px 32px rgba(10, 110, 189, 0.14);
+      padding: 36px 28px 28px 28px;
+      min-width: 340px;
+      max-width: 96vw;
+      animation: popin 0.18s;
+      position: relative;
+    }
+
+    @keyframes popin {
+      from {
+        transform: scale(0.92);
+        opacity: 0.5;
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .modal h2 {
+      margin-top: 0;
+      color: #0a6ebd;
+      font-size: 1.4em;
+      text-align: center;
+    }
+
+    .user-type-group {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 18px;
+    }
+
+    .user-type-btn {
+      background: #e3f2fd;
+      color: #0a6ebd;
+      border: none;
+      border-radius: 18px;
+      padding: 12px 32px;
+      font-size: 1.13em;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .user-type-btn.active,
+    .user-type-btn:hover {
+      background: #0a6ebd;
+      color: #fff;
+    }
+
+    .modal .submit-btn {
+      width: 100%;
+      background: linear-gradient(90deg, #0a6ebd 70%, #18a558 100%);
+      color: #fff;
+      border: none;
+      padding: 13px 0;
+      border-radius: 24px;
+      font-size: 1.09em;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background 0.2s;
+    }
+
+    .modal .submit-btn:hover {
+      background: linear-gradient(90deg, #085a96 60%, #18a558 100%);
+    }
+
+    .close-modal {
+      position: absolute;
+      right: 18px;
+      top: 16px;
+      font-size: 1.6em;
+      color: #bbb;
+      cursor: pointer;
+      background: none;
+      border: none;
+      transition: color 0.2s;
+    }
+
+    .close-modal:hover {
+      color: #0a6ebd;
+    }
+
+    @media (max-width: 900px) {
+      .container {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        min-width: 0;
+        width: 100%;
+        margin-bottom: 24px;
+      }
+
+      .main {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .navbar {
+        padding: 8px 4vw;
+      }
+
+      .navbar .logo {
+        font-size: 1.3em;
+      }
+
+      .navbar .nav-links {
+        gap: 12px;
+      }
+
+      .nav-link,
+      .nav-action {
+        padding: 8px 12px;
+        font-size: 0.97em;
+      }
+
+      .container,
+      .header {
+        flex-direction: column;
+        padding: 8px;
+      }
+
+      .search-bar {
+        margin: 14px 0;
+      }
+
+      .sidebar {
+        padding: 12px 0;
+      }
+
+      .hero {
+        padding: 20px 10px;
+      }
+
+      .modal {
+        min-width: 90vw;
+      }
+    }
+
+
+
+
+    #userInput {
+      width: 100%;
+      padding: 10px 15px;
+      font-size: 18px;
+      border: none;
+      border-radius: 20px;
+      outline: none;
+      margin-bottom: 10px;
+    }
+
+    #responseBox {
+      background: white;
+      padding: 15px;
+      border-radius: 10px;
+      font-size: 16px;
+      color: #333;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
 </head>
 
 <body>
-  <header>
-    <div class="logo">Laundry Smart</div>
-    <nav>
-      <ul>
-        <li><a href="javascript:void(0);" onclick="toggleFeatures()">Features</a></li>
-
-        <li><a href="login.html?tab=login"">Login</a></li>
-        <li><a href=" login.html?tab=register">Register</a></li>
-      </ul>
-    </nav>
-  </header>
-
-  <section class="hero">
-    <h1>Smart Laundry, Hassle-Free</h1>
-    <p>Schedule, track, and manage your laundry service effortlessly.</p>
-    <a href="login.html?tab=register" class="cta-button">Get Started</a>
-  </section>
-
-  <section id="features" class="features">
-    <h2>Features</h2>
-    <div class="feature-grid">
-      <div class="feature">
-        <h3 id="das"><a href="user.html">🔐Registration & Login</a></h3>
-        <p>Easy onboarding with email or phone number.</p>
-      </div>
-      <div class="feature">
-        <h3 id="das"><a href="walet.html">💳 Wallet System</a></h3>
-        <p>Rechargeable wallet with promo codes and full transaction history.</p>
-      </div>
-      <div class="feature">
-        <h3>📊 Dynamic Pricing</h3>
-        <p>Pricing adjusts by clothing type and delivery urgency.</p>
-      </div>
-      <div class="feature">
-        <h3>📅 Smart Scheduling</h3>
-        <p>Live calendar to pick delivery and pickup slots.</p>
-      </div>
-      <div class="feature">
-        <h3>📦 Order Tracking</h3>
-        <p>Track progress: picked up, washed, dispatched, and delivered.</p>
-      </div>
-      <div class="feature">
-        <h3>🔔 Notifications</h3>
-        <p>SMS, email, and in-app notifications in real-time.</p>
-      </div>
-      <div class="feature">
-        <h3>🤖 Chatbot Support</h3>
-        <p>24/7 AI chatbot for help and inquiries.</p>
-      </div>
-      <div class="feature">
-        <h3 id="das"><a href="admin.html">🛠️ Admin Dashboard</a></h3>
-        <p>Admins manage orders, users, and payment issues in real-time.</p>
-      </div>
-      <div class="feature">
-        <h3>📈 Analytics</h3>
-        <p>Monitor service performance and customer growth data.</p>
-      </div>
+  <nav class="navbar">
+    <div class="logo">
+      <i class="fa-solid fa-soap"></i>
+      LaundryApp
     </div>
-  </section>
-
-  <footer>
-    <p>&copy; 2025 Laundry Smart. All rights reserved.</p>
+    <div class="chat-container">
+      <input id="userInput" type="text" placeholder="কি সার্চ করবেন?" onkeydown="handleEnter(event)">
+      <div id="responseBox" class="fade-in-response"></div>
+    </div>
+    <div class="nav-links">
+      <a href="#" class="nav-link"><i class="fa-solid fa-house"></i>হোম</a>
+      <a href="#" class="nav-link"><i class="fa-solid fa-bolt"></i>সার্ভিসেস</a>
+      <a href="#" class="nav-link"><i class="fa-solid fa-tags"></i>অফার</a>
+      <a href="#" class="nav-link"><i class="fa-solid fa-phone"></i>যোগাযোগ</a>
+      <button class="nav-action" id="openModalBtn"><i class="fa-solid fa-user"></i>Sign In / Sign Up</button>
+    </div>
+  </nav>
+  <div class="container">
+    <aside class="sidebar">
+      <h3>Categories</h3>
+      <ul class="categories">
+        <li>Laundry Services</li>
+        <li>Express Delivery</li>
+        <li>Eco Wash</li>
+        <li>Ironing</li>
+        <li>Subscription Plans</li>
+        <li>Offers & Deals</li>
+        <li>Customer Support</li>
+        <li>More Categories...</li>
+      </ul>
+    </aside>
+    <main class="main">
+      <section class="hero">
+        <div class="hero-title">Find Your Perfect Laundry Solution</div>
+        <div class="hero-sub">Smart, Fast & Reliable Laundry Services</div>
+        <button class="cta-btn">Order Now</button>
+        <div class="hero-icons">
+          <div class="hero-icon">🚗<span>Pickup</span></div>
+          <div class="hero-icon">🧺<span>Washing</span></div>
+          <div class="hero-icon">🚚<span>Delivery</span></div>
+          <div class="hero-icon">📱<span>Tracking</span></div>
+        </div>
+      </section>
+      <section class="suggestions">
+        <div class="suggestion">Laundry Offers</div>
+        <div class="suggestion">Express Delivery</div>
+        <div class="suggestion">Eco-Friendly Wash</div>
+        <div class="suggestion">Ironing Packages</div>
+        <div class="suggestion">Home Pickup</div>
+        <div class="suggestion">Subscription Discounts</div>
+      </section>
+      <section class="features">
+        <h3>Feature Highlights</h3>
+        <table class="features-table">
+          <tr>
+            <th>ফিচার</th>
+            <th>বর্ণনা</th>
+          </tr>
+          <tr>
+            <td>Smart Pickup</td>
+            <td>ঘরে বসেই অর্ডার ও সংগ্রহ</td>
+          </tr>
+          <tr>
+            <td>Live Tracking</td>
+            <td>অর্ডার কোথায়, লাইভ আপডেট</td>
+          </tr>
+          <tr>
+            <td>Eco Wash</td>
+            <td>পরিবেশবান্ধব পরিষেবা</td>
+          </tr>
+          <tr>
+            <td>Fast Delivery</td>
+            <td>নির্ভরযোগ্য দ্রুত ডেলিভারি</td>
+          </tr>
+        </table>
+      </section>
+      <section class="reviews">
+        <h3>Customer Reviews</h3>
+        <blockquote>“Laundry এখন আর ঝামেলা না—এক ক্লিকে সব!”<br><cite>— রাফি, ঢাকা</cite></blockquote>
+        <blockquote>“ডেলিভারি ও ট্র্যাকিং ফিচার অসাধারণ!”<br><cite>— মিম, চট্টগ্রাম</cite></blockquote>
+      </section>
+      <section class="how-it-works">
+        <h3>কিভাবে কাজ করে</h3>
+        <ol>
+          <li>অর্ডার দিন: ওয়েব/অ্যাপে অর্ডার করুন</li>
+          <li>পিকআপ: আমাদের টিম সংগ্রহ করবে</li>
+          <li>প্রসেসিং: স্মার্ট ওয়াশিং ও ড্রাইং</li>
+          <li>ডেলিভারি: নির্দিষ্ট সময়ে ডেলিভারি</li>
+        </ol>
+      </section>
+    </main>
+  </div>
+  <footer class="footer">
+    <div>
+      Social Media আইকন | Terms & Conditions | Privacy Policy | Contact
+    </div>
   </footer>
 
+  <!-- Sign In/Sign Up Modal -->
+  <div class="modal-bg" id="modalBg">
+    <div class="modal">
+      <button class="close-modal" id="closeModalBtn">&times;</button>
+      <h2>Sign In / Sign Up</h2>
+      <div class="user-type-group" id="userTypeGroup">
+        <button type="button" class="user-type-btn active" data-type="customer">কাস্টমার</button>
+        <button type="button" class="user-type-btn" data-type="shopkeeper">দোকান মালিক</button>
+      </div>
+      <button class="submit-btn" id="nextBtn">পরবর্তী ধাপ</button>
+    </div>
+  </div>
+
   <script>
-    function toggleFeatures() {
-      const featureContent = document.getElementById("features");
-      if (featureContent.style.display === "none" || featureContent.style.display === "") {
-        featureContent.style.display = "block";
-      } else {
-        featureContent.style.display = "none";
+    function handleEnter(event) {
+      if (event.key === "Enter") {
+        const input = document.getElementById("userInput").value.trim();
+        if (input) {
+          getSmartResponse(input);
+        }
       }
     }
+
+    function getSmartResponse(query) {
+      const responseBox = document.getElementById("responseBox");
+
+      // বাংলা কিওয়ার্ড অনুযায়ী demo উত্তর (Firebase বা ChatGPT API দিয়ে ভবিষ্যতে replace করা যাবে)
+      const responses = {
+        "pickup": "আমাদের প্রতিনিধি আপনার নির্ধারিত ঠিকানায় কাপড় সংগ্রহ করতে যাবে।",
+        "washing": "আপনার কাপড়গুলো আমরা আধুনিক মেশিনে পরিষ্কার করি।",
+        "delivery": "পরিষ্কার কাপড় আপনার ঠিকানায় ফেরত পাঠানো হবে।",
+        "tracking": "অর্ডারের অবস্থান আপনি রিয়েল টাইমে ট্র্যাক করতে পারবেন।"
+      };
+
+      let matchedKey = Object.keys(responses).find(key => query.toLowerCase().includes(key) || query.includes(key));
+      let reply = matchedKey ? responses[matchedKey] : "দুঃখিত, এই সম্পর্কে আমার কাছে কোনো তথ্য নেই।";
+
+      // দেখানো
+      responseBox.innerText = reply;
+    }
+
+
+
+    // Modal control
+    const openModalBtn = document.getElementById('openModalBtn');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const modalBg = document.getElementById('modalBg');
+    openModalBtn.onclick = () => { modalBg.classList.add('active'); }
+    closeModalBtn.onclick = () => { modalBg.classList.remove('active'); }
+    window.addEventListener('click', function (e) {
+      if (e.target === modalBg) modalBg.classList.remove('active');
+    });
+
+    // User type selection logic
+    const userTypeGroup = document.getElementById('userTypeGroup');
+    const userTypeBtns = userTypeGroup.querySelectorAll('.user-type-btn');
+    let selectedType = 'customer';
+    userTypeBtns.forEach(btn => {
+      btn.onclick = () => {
+        userTypeBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        selectedType = btn.getAttribute('data-type');
+      };
+    });
+
+    // Next button action
+    document.getElementById('nextBtn').onclick = function () {
+      if (selectedType === 'customer') {
+        window.location.href = 'login.html';
+      } else {
+        // দোকান মালিকের জন্য চাইলে এখানে অন্য পেজে পাঠাতে পারেন
+        window.location.href = 'swlogin.html';
+        modalBg.classList.remove('active');
+      }
+    };
+
+
   </script>
 </body>
 

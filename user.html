@@ -4,147 +4,259 @@
 <head>
   <meta charset="UTF-8">
   <title>Laundry Service</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
+    /* ... (Your CSS from above, unchanged) ... */
     html {
       scroll-behavior: smooth;
     }
 
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f7f7f7;
     }
 
     .navbar {
-      background-color: #1abc9c;
-      padding: 10px 20px;
+      background: #1abc9c;
+      color: #fff;
+      padding: 0 0;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
+      min-height: 56px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .navbar>div {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding-left: 24px;
     }
 
     .navbar a {
-      color: white;
-      margin-right: 15px;
+      color: #fff;
       text-decoration: none;
+      font-weight: 500;
+      font-size: 17px;
+      padding: 18px 8px;
+      border-bottom: 2px solid transparent;
+      transition: border .2s;
+    }
+
+    .navbar a:hover {
+      border-bottom: 2px solid #fff;
+    }
+
+    #balanceSection {
+      background: #f1f1f1;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 14px;
+      padding: 8px 24px;
+      font-size: 16px;
+      flex-wrap: wrap;
+    }
+
+    #balanceSection span {
       font-weight: bold;
+      color: #27ae60;
+    }
+
+    #balanceSection button {
+      background: #3498db;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 8px 16px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background .2s;
+    }
+
+    #balanceSection button:hover {
+      background: #217dbb;
+    }
+
+    #landing {
+      padding: 48px 10px 40px 10px;
+      text-align: center;
+      background: #f9f9f9;
+    }
+
+    #landing h1 {
+      font-size: 2.5rem;
+      color: #1abc9c;
+      margin-bottom: 12px;
+    }
+
+    #landing p {
+      font-size: 1.2rem;
+      color: #444;
     }
 
     .container {
       display: flex;
       flex-wrap: wrap;
+      min-height: 350px;
+      background: #fff;
+      margin-bottom: 24px;
     }
 
     .sidebar {
-      background-color: #dff9fb;
-      width: 200px;
-      padding: 20px;
-      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+      background: #dff9fb;
+      width: 220px;
+      min-width: 180px;
+      padding: 24px 14px;
+      box-shadow: 2px 0 8px rgba(0, 0, 0, 0.04);
+      border-radius: 0 12px 12px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
 
     .sidebar h3 {
-      margin-bottom: 10px;
+      margin: 10px 0 4px 0;
+      color: #0984e3;
     }
 
     .sidebar button {
-      display: block;
-      margin: 10px 0;
-      padding: 10px;
-      width: 100%;
-      border: none;
-      background-color: white;
+      background: #fff;
+      border: 1px solid #1abc9c;
+      color: #1abc9c;
       border-radius: 6px;
-      box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+      padding: 8px 0;
+      margin-bottom: 6px;
+      font-size: 15px;
       cursor: pointer;
+      transition: background .2s, color .2s;
+    }
+
+    .sidebar button:hover {
+      background: #1abc9c;
+      color: #fff;
     }
 
     .main {
       flex: 1;
-      padding: 20px;
+      padding: 30px 20px;
       display: flex;
       flex-wrap: wrap;
-      gap: 20px;
+      gap: 22px;
       justify-content: center;
+      align-items: flex-start;
+      min-width: 220px;
     }
 
     .item-card {
-      border: 1px solid red;
-      border-radius: 10px;
-      width: 200px;
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      width: 210px;
+      background: #fff;
       text-align: center;
-      padding: 10px;
+      padding: 12px 8px 18px 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+      transition: box-shadow .2s;
+    }
+
+    .item-card:hover {
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
     }
 
     .item-card img {
       width: 100%;
-      height: 150px;
+      height: 140px;
       object-fit: cover;
       border-radius: 8px;
+      margin-bottom: 8px;
     }
 
     .item-card input {
       margin-top: 10px;
-      padding: 5px;
+      padding: 6px;
       width: 80%;
       border-radius: 5px;
-      border: 1px solid gray;
-    }
-
-    .item-card button {
-      background-color: #007BFF;
-      color: white;
-      border: none;
-      padding: 6px 12px;
-      margin-top: 10px;
-      border-radius: 5px;
-      cursor: pointer;
+      border: 1px solid #b2bec3;
+      font-size: 15px;
     }
 
     .submit-area {
       text-align: center;
-      margin: 20px;
+      margin: 28px 0 20px 0;
     }
 
     .submit-btn {
-      background-color: #27ae60;
-      color: white;
-      padding: 12px 20px;
+      background: #27ae60;
+      color: #fff;
+      padding: 14px 32px;
       border: none;
-      font-size: 16px;
-      border-radius: 6px;
+      font-size: 17px;
+      border-radius: 8px;
       cursor: pointer;
+      font-weight: 500;
+      transition: background .2s;
     }
 
-    /* Modal Style */
+    .submit-btn:hover {
+      background: #168f4d;
+    }
+
+    #history {
+      padding: 40px 10px;
+      background: #ecf0f1;
+      text-align: center;
+    }
+
+    #history h2 {
+      color: #1abc9c;
+      margin-bottom: 10px;
+    }
+
+    #history p {
+      color: #636e72;
+      font-size: 1.1rem;
+    }
+
     .modal {
       display: none;
       position: fixed;
-      z-index: 10;
+      z-index: 100;
       left: 0;
       top: 0;
-      width: 100%;
-      height: 100%;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.4);
       overflow: auto;
-      background-color: rgba(0, 0, 0, 0.5);
     }
 
     .modal-content {
-      background-color: #fefefe;
+      background: #fff;
       margin: 5% auto;
-      padding: 20px;
-      border-radius: 10px;
-      width: 90%;
-      max-width: 500px;
+      padding: 24px 20px 18px 20px;
+      border-radius: 12px;
+      width: 95%;
+      max-width: 430px;
       font-size: 16px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 0 18px rgba(0, 0, 0, 0.18);
+      position: relative;
     }
 
     .close {
       color: #aaa;
       float: right;
-      font-size: 28px;
+      font-size: 30px;
       font-weight: bold;
       cursor: pointer;
+      position: absolute;
+      right: 18px;
+      top: 10px;
+      transition: color .2s;
+    }
+
+    .close:hover {
+      color: #e74c3c;
     }
 
     .input-field {
@@ -153,118 +265,118 @@
       margin-top: 10px;
       border: 1px solid #ccc;
       border-radius: 6px;
+      font-size: 16px;
     }
 
-    @media (max-width: 768px) {
+    #billDetails {
+      margin-top: 18px;
+    }
+
+    @media (max-width: 900px) {
       .container {
         flex-direction: column;
       }
 
       .sidebar {
         width: 100%;
-        box-shadow: none;
+        border-radius: 0 0 12px 12px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 10px 20px;
+        justify-content: flex-start;
       }
 
       .main {
-        justify-content: center;
+        padding: 20px 8px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .navbar>div {
+        gap: 10px;
+        padding-left: 10px;
+      }
+
+      #balanceSection {
+        padding: 8px 10px;
+        font-size: 15px;
+      }
+
+      .sidebar {
+        padding: 16px 4px;
+      }
+
+      .main {
+        gap: 12px;
       }
 
       .item-card {
-        width: 90%;
+        width: 95vw;
+        max-width: 340px;
       }
 
       .modal-content {
-        width: 95%;
+        max-width: 98vw;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .navbar {
+        flex-direction: column;
+        min-height: 40px;
+      }
+
+      .navbar>div {
+        padding-left: 0;
+      }
+
+      #balanceSection {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
       }
     }
   </style>
 </head>
 
 <body>
-
   <div class="navbar">
     <div>
       <a href="#landing">Landing</a>
       <a href="#service">Service</a>
       <a href="#history">History</a>
+      <div id="userEmailDisplay" style="cursor:pointer; font-weight:bold; color:#2980b9; margin-left:12px;"></div>
     </div>
   </div>
-
-  <!-- Landing Section -->
-  <section id="landing" style="padding: 40px; text-align: center; background-color: #f9f9f9;">
+  <div id="balanceSection">
+    <div>
+      💰 ব্যালেন্স: <span id="userBalance">Loading...</span> ৳
+    </div>
+    <button onclick="goToRechargePage()">🔄 রিচার্জ করুন</button>
+  </div>
+  <section id="landing">
     <h1>Welcome to Our Laundry Service</h1>
     <p>Clean clothes, happy life!</p>
   </section>
-
-  <!-- Service Section -->
   <section id="service" class="container">
     <div class="sidebar">
-      <h3>Status</h3>
-      <p>Received</p>
-      <h3>List Of Shops</h3>
-      <button>Sunrise Laundry</button>
-      <button>Sparkle Wash</button>
-      <button>Quick Cleaners</button>
-      <button>Fresh & Fold</button>
+      <div class="shopListContainer"></div>
     </div>
+
 
     <div class="main">
-      <div class="item-card">
-        <img src="cotton.png" alt="Cotton">
-        <p><strong>Cotton</strong></p>
-        <input type="number" placeholder="quantity :" data-name="Cotton" data-price="30">
-        <button>Done</button>
-      </div>
-
-      <div class="item-card">
-        <img src="sarri.png" alt="Shari">
-        <p><strong>Shari</strong></p>
-        <input type="number" placeholder="quantity :" data-name="Shari" data-price="50">
-        <button>Done</button>
-      </div>
-
-      <div class="item-card">
-        <img src="panjabi.png" alt="Panjabi">
-        <p><strong>Panjabi</strong></p>
-        <input type="number" placeholder="quantity :" data-name="Panjabi" data-price="60">
-        <button>Done</button>
-      </div>
-
-      <div class="item-card">
-        <img src="p.png" alt="Pant">
-        <p><strong>Pant</strong></p>
-        <input type="number" placeholder="quantity :" data-name="Pant" data-price="40">
-        <button>Done</button>
-      </div>
-
-      <div class="item-card">
-        <img src="tshirt.png" alt="Shirt">
-        <p><strong>Shirt</strong></p>
-        <input type="number" placeholder="quantity :" data-name="Shirt" data-price="35">
-        <button>Done</button>
-      </div>
-
-      <div class="item-card">
-        <img src="3pice.png" alt="3-piece">
-        <p><strong>3-piece</strong></p>
-        <input type="number" placeholder="quantity :" data-name="3-piece" data-price="80">
-        <button>Done</button>
-      </div>
+      <p>Loading products...</p>
     </div>
   </section>
-
-  <!-- Submit Button -->
   <div class="submit-area">
     <button class="submit-btn" onclick="generateBill()">Select Shop & Submit</button>
   </div>
-
-  <!-- History Section -->
-  <section id="history" style="padding: 40px; background-color: #ecf0f1; text-align: center;">
+  <section id="history">
     <h2>🧺 Past Orders</h2>
-    <p>You don't have any previous orders yet.</p>
+    <div id="orderHistoryContent">
+      <p>Loading...</p>
+    </div>
   </section>
-
-  <!-- Modal for Bill -->
   <div id="billModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="document.getElementById('billModal').style.display='none'">&times;</span>
@@ -272,17 +384,172 @@
       <input type="text" id="customerName" class="input-field" placeholder="Enter your name">
       <input type="text" id="customerPhone" class="input-field" placeholder="Enter mobile number">
       <input type="text" id="customerAddress" class="input-field" placeholder="Enter address">
-      <div id="billDetails" style="margin-top: 15px;"></div>
+      <div id="billDetails"></div>
+      <button class="submit-btn" onclick="submitOrder()">Confirm & Submit Order</button>
     </div>
   </div>
+  <script type="module">
+    // Firebase Imports
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, getDocs, addDoc, doc, getDoc, updateDoc, increment, query, where, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-  <script>
-    function generateBill() {
+    // Firebase Config
+    const firebaseConfig = {
+      apiKey: "AIzaSyCrPUFMdKuxMDV16RIu833yvzw-a8WxCSg",
+      authDomain: "smart-laundry-2d523.firebaseapp.com",
+      projectId: "smart-laundry-2d523",
+      storageBucket: "smart-laundry-2d523.appspot.com",
+      messagingSenderId: "7431686498",
+      appId: "1:7431686498:web:d4d1a4377327c7eafac43b",
+      measurementId: "G-K6W312NY4M"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    // State
+    let selectedShop = null;
+    let productsList = [];
+    let shopList = [];
+    let currentUser = null;
+
+    // Shop select
+    window.selectShop = function (shop) {
+      selectedShop = shop;
+      document.querySelectorAll('.sidebar button').forEach(btn => btn.classList.remove('active'));
+      Array.from(document.querySelectorAll('.sidebar button')).find(btn => btn.textContent === shop)?.classList.add('active');
+    };
+
+    // Get wallet doc
+    async function getWalletDocByEmail(email) {
+      const docRef = doc(db, "wallets", email);
+      const snapshot = await getDoc(docRef);
+      return snapshot.exists() ? { id: snapshot.id, data: () => snapshot.data() } : null;
+    }
+
+    // Load products
+
+
+
+    async function loadProducts() {
+      const productsCol = collection(db, "products");
+      const productSnapshot = await getDocs(productsCol);
+      const container = document.querySelector(".main");
+      container.innerHTML = "";
+      productsList = [];
+
+      productSnapshot.forEach((docSnap) => {
+        const data = docSnap.data();
+        const safeImg = data.img ? data.img.trim() : 'https://via.placeholder.com/200x150?text=No+Image';
+
+        console.log("Loaded Product:", data.name, "| Image URL:", safeImg);
+
+        productsList.push({ ...data, id: docSnap.id });
+
+        const item = document.createElement("div");
+        item.className = "item-card";
+        item.setAttribute("data-product-id", docSnap.id); // ✅ Add this line
+
+        item.innerHTML = `
+      <img src="${safeImg}" alt="${data.name}" 
+           onerror="this.onerror=null; this.src='https://via.placeholder.com/200x150?text=No+Image'">
+      <p><strong>${data.name}</strong></p>
+      <p class="product-price">Price: ${data.price}৳</p>
+      <input type="number" placeholder="quantity :" min="0" 
+             data-name="${data.name}" data-price="${data.price}" style="margin-bottom:5px;">
+    `;
+
+        container.appendChild(item);
+      });
+    }
+
+    async function loadShops() {
+      const shopSnapshot = await getDocs(collection(db, "shopowners"));
+      const container = document.querySelector(".shopListContainer");
+      container.innerHTML = "<h3>Shops</h3>";
+
+      shopSnapshot.forEach((docSnap) => {
+        const data = docSnap.data();
+        const shopName = data.shopName;
+        const email = data.email;
+
+        const button = document.createElement("button");
+        button.textContent = shopName + " (" + data.shopPlace + ")";
+        button.onclick = () => showProducts(email, shopName);
+
+        container.appendChild(button);
+      });
+    }
+
+    async function showProducts(ownerEmail, shopName) {
+      selectedShop = shopName;
+      const productQuery = query(collection(db, "products"), where("email", "==", ownerEmail));
+      const querySnapshot = await getDocs(productQuery);
+
+      querySnapshot.forEach((docSnap) => {
+        const productData = docSnap.data();
+        const productId = docSnap.id;
+
+        const itemCard = document.querySelector(`.item-card[data-product-id="${productId}"]`);
+        if (itemCard) {
+          const priceTag = itemCard.querySelector(".product-price");
+          const input = itemCard.querySelector("input");
+
+          if (priceTag) priceTag.textContent = `Price: ${productData.price}৳`;
+          if (input) input.dataset.price = productData.price;
+        }
+      });
+    }
+
+
+    // Load user balance
+    async function loadUserBalance(email) {
+      const walletDoc = await getWalletDocByEmail(email);
+      const balance = walletDoc?.data().balance || 0;
+      document.getElementById("userBalance").innerText = `${balance} ৳`;
+    }
+
+    // Load order history
+    async function loadOrderHistory(email) {
+      const q = query(collection(db, "orders"), where("email", "==", email), orderBy("timestamp", "desc"));
+      const snap = await getDocs(q);
+      const orders = snap.docs.map(doc => doc.data());
+      const container = document.getElementById("orderHistoryContent");
+      if (orders.length === 0) {
+        container.innerHTML = `<p>You don't have any previous orders yet.</p>`;
+        return;
+      }
+      container.innerHTML = "";
+      orders.forEach(order => {
+        let items = order.items.map(item =>
+          `<li>${item.name} x ${item.qty} = ${item.qty * item.price}৳</li>`
+        ).join("");
+        container.innerHTML += `
+          <div style="background:#fff; border-radius:10px; margin:12px auto; max-width:400px; box-shadow:0 2px 8px #0001; padding:16px;">
+            <div style="color:#888; font-size:13px;">${order.timestamp?.toDate?.().toLocaleString?.() || ""}</div>
+            <div><b>Name:</b> ${order.name}</div>
+            <div><b>Phone:</b> ${order.phone}</div>
+            <div><b>Address:</b> ${order.address}</div>
+            <div><b>Shop:</b> ${order.shop || 'N/A'}</div>
+            <div><b>Items:</b><ul>${items}</ul></div>
+            <div><b>Total:</b> ${order.grandTotal}৳</div>
+          </div>
+        `;
+      });
+    }
+
+    // Generate bill
+    window.generateBill = async function () {
+      const user = auth.currentUser;
+      if (!user) { alert("❌ ইউজার লগইন নেই।"); return; }
+      if (!selectedShop) { alert("⚠️ দয়া করে একটি Shop সিলেক্ট করুন."); return; }
+      const email = user.email;
       const inputs = document.querySelectorAll('.item-card input');
-      let billHTML = "<table style='width:100%; margin-top:10px; border-collapse: collapse;'>"
-        + "<tr><th style='text-align:left;'>Item</th><th>Qty</th><th>Price</th><th>Total</th></tr>";
+      let billHTML = "<table style='width:100%; margin-top:10px; border-collapse: collapse;'><tr><th style='text-align:left;'>Item</th><th>Qty</th><th>Price</th><th>Total</th></tr>";
       let total = 0;
-
       inputs.forEach(input => {
         const qty = parseInt(input.value);
         const name = input.dataset.name;
@@ -293,14 +560,126 @@
           billHTML += `<tr><td>${name}</td><td>${qty}</td><td>${price}৳</td><td>${subtotal}৳</td></tr>`;
         }
       });
-
+      if (total === 0) { alert("⚠️ অন্তত ১টি প্রোডাক্ট quantity দিন।"); return; }
+      const walletDoc = await getWalletDocByEmail(email);
+      if (!walletDoc) { alert("❌ ইউজারের ওয়ালেট ডেটা পাওয়া যায়নি।"); return; }
+      const currentBalance = walletDoc.data().balance || 0;
+      if (currentBalance < total) { alert("❌ পর্যাপ্ত ব্যালেন্স নেই। রিচার্জ করুন।"); return; }
       billHTML += `<tr><td colspan="3" style="text-align:right;"><strong>Grand Total:</strong></td><td><strong>${total}৳</strong></td></tr></table>`;
-
       document.getElementById('billDetails').innerHTML = billHTML;
       document.getElementById('billModal').style.display = 'block';
-    }
-  </script>
+      window.lastOrderTotal = total;
+    };
 
+    // Submit order
+    window.submitOrder = async function () {
+      const user = auth.currentUser;
+      if (!user) { alert("❌ ইউজার লগইন নেই।"); return; }
+      const email = user.email;
+      const name = document.getElementById('customerName').value.trim();
+      const phone = document.getElementById('customerPhone').value.trim();
+      const address = document.getElementById('customerAddress').value.trim();
+      const inputs = document.querySelectorAll('.item-card input');
+      const items = [];
+      let grandTotal = 0;
+      inputs.forEach(input => {
+        const qty = parseInt(input.value);
+        const itemName = input.dataset.name;
+        const price = parseInt(input.dataset.price);
+        if (!isNaN(qty) && qty > 0) {
+          const subtotal = qty * price;
+          grandTotal += subtotal;
+          items.push({ name: itemName, qty, price, subtotal });
+        }
+      });
+      if (!name || !phone || !address || items.length === 0) {
+        alert("⚠️ দয়া করে সব ইনপুট পূরণ করুন এবং অন্তত ১টি প্রোডাক্ট quantity দিন।");
+        return;
+      }
+      if (!selectedShop) {
+        alert("⚠️ দয়া করে একটি Shop সিলেক্ট করুন.");
+        return;
+      }
+      try {
+        await addDoc(collection(db, "orders"), {
+          name, phone, address, email, shop: selectedShop, items, grandTotal, timestamp: new Date()
+        });
+        // Wallet update
+        const walletRef = doc(db, "wallets", email);
+        const walletSnap = await getDoc(walletRef);
+        const oldData = walletSnap.exists() ? walletSnap.data() : { balance: 0, transactions: [] };
+        await updateDoc(walletRef, {
+          balance: increment(-grandTotal),
+          transactions: [...(oldData.transactions || []), `Order placed ৳${grandTotal}`]
+        });
+        alert("✅ অর্ডার সফলভাবে জমা হয়েছে!");
+        document.getElementById('billModal').style.display = 'none';
+        // Clear Fields
+        document.getElementById('customerName').value = "";
+        document.getElementById('customerPhone').value = "";
+        document.getElementById('customerAddress').value = "";
+        inputs.forEach(input => input.value = "");
+        await loadUserBalance(email);
+        await loadOrderHistory(email);
+      } catch (error) {
+        console.error("❌ অর্ডার সমস্যা:", error);
+
+      }
+    };
+
+    // Recharge Page Redirect
+    window.goToRechargePage = function () {
+      window.location.href = "walet.html";
+    };
+
+    // Close Modal on Click Outside
+    window.onclick = function (event) {
+      const modal = document.getElementById('billModal');
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    };
+
+    // Email Toggle
+    function displayEmailToggle(email) {
+      const emailContainer = document.getElementById('userEmailDisplay');
+      if (!emailContainer) return;
+      emailContainer.textContent = email.charAt(0).toUpperCase();
+      emailContainer.title = "Click to show email";
+      emailContainer.onclick = () => {
+        if (emailContainer.textContent.length === 1) {
+          emailContainer.textContent = email;
+          emailContainer.title = "Click to hide email";
+        } else {
+          emailContainer.textContent = email.charAt(0).toUpperCase();
+          emailContainer.title = "Click to show email";
+        }
+      };
+    }
+
+
+
+
+
+
+    // On Page Load - Check Auth & Load Data
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        window.location.href = "login.html";
+        return;
+      }
+      currentUser = user;
+      const email = user.email;
+      loadUserBalance(email);
+      loadProducts().then(() => { });
+      loadShops();
+
+
+      showProducts();
+      displayEmailToggle(email);
+      loadOrderHistory(email);
+    });
+  </script>
 </body>
 
 </html>

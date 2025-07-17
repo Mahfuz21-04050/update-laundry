@@ -2,11 +2,11 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Laundry Smart | Login & Register</title>
+  <link rel="stylesheet" href="login.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <link rel="stylesheet" href="login.css">
 </head>
 
 <body>
@@ -16,13 +16,13 @@
       <div class="tab-link" data-tab="register">Register</div>
     </div>
 
-    <!-- Login Form -->
+    <!-- Login -->
     <div class="tab-content active" id="login">
       <h2><i class="fas fa-sign-in-alt"></i> Login</h2>
       <form id="loginForm">
         <div class="input-group">
-          <i class="fas fa-user"></i>
-          <input type="text" id="loginUsername" placeholder="Enter Username" required>
+          <i class="fas fa-envelope"></i>
+          <input type="email" id="loginEmail" placeholder="Enter Email" required>
         </div>
         <div class="input-group">
           <i class="fas fa-lock"></i>
@@ -33,7 +33,7 @@
       </form>
     </div>
 
-    <!-- Registration Form -->
+    <!-- Register -->
     <div class="tab-content" id="register">
       <h2><i class="fas fa-user-plus"></i> Register</h2>
       <form id="registerForm">
@@ -59,8 +59,30 @@
     </div>
   </div>
 
-  <script>
-    // Tab click handle
+  <!-- Firebase and App Logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCrPUFMdKuxMDV16RIu833yvzw-a8WxCSg",
+      authDomain: "smart-laundry-2d523.firebaseapp.com",
+      projectId: "smart-laundry-2d523",
+      storageBucket: "smart-laundry-2d523.appspot.com",
+      messagingSenderId: "7431686498",
+      appId: "1:7431686498:web:d4d1a4377327c7eafac43b",
+      measurementId: "G-K6W312NY4M"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+
+    // Tab Switch
     document.querySelectorAll('[data-tab]').forEach(tab => {
       tab.addEventListener('click', function () {
         const target = this.getAttribute('data-tab');
@@ -71,77 +93,80 @@
       });
     });
 
-    // Check URL query parameter
-    const urlParams = new URLSearchParams(window.location.search);
-    const tab = urlParams.get('tab');
-    if (tab === 'register' || tab === 'login') {
-      document.querySelectorAll('.tab-link').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-      document.querySelector(`.tab-link[data-tab="${tab}"]`).classList.add('active');
-      document.getElementById(tab).classList.add('active');
-    }
-
-    //  Store registration data
-    let registeredUser = {
-      name: '',
-      email: '',
-      phone: '',
-      password: ''
-    };
-
-    //  Registration Form Submit Handler
-    const registerForm = document.getElementById('registerForm');
-    registerForm.addEventListener('submit', function (e) {
+    document.getElementById('registerForm').addEventListener('submit', function (e) {
       e.preventDefault();
 
       const name = document.getElementById('regName').value.trim();
       const email = document.getElementById('regEmail').value.trim();
-      const phone = document.getElementById('regPhone').value.trim();
       const password = document.getElementById('regPassword').value;
+      const phone = document.getElementById('regPhone').value.trim();
 
-      const gmailRegex = /^[a-zA-Z0-9._%+-]+@gmail\.com$/;
       const phoneRegex = /^01[0-9]{9}$/;
-
-      if (!gmailRegex.test(email)) {
-        alert("❌ Please enter a valid Gmail address (must end with @gmail.com)");
-        return;
-      }
-
       if (!phoneRegex.test(phone)) {
-        alert("❌ Please enter a valid 11-digit Bangladeshi mobile number (e.g., 01XXXXXXXXX)");
+        alert("❌ সঠিক ১১ ডিজিটের বাংলাদেশি ফোন নম্বর দিন (০১XXXXXXXXX)");
         return;
       }
 
-      // Save data to compare during login
-      registeredUser = {
-        name,
-        email,
-        phone,
-        password
-      };
+      async function handleSignup() {
+        // your code here
+        if (password.length < 6) {
+          alert("❌ পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে।");
+          return;
+        }
 
-      alert("✅ Registration successful! Now you can login.");
-      // Switch to login tab
-      document.querySelector('[data-tab="login"]').click();
+        const shopOwnerQuery = query(collection(db, "shopowners"), where("email", "==", email));
+        const shopOwnerSnapshot = await getDocs(shopOwnerQuery);
+
+        if (!shopOwnerSnapshot.empty) {
+          alert("এই ইমেইলটি একটি দোকানদার হিসেবে নিবন্ধিত। অনুগ্রহ করে অন্য ইমেইল ব্যবহার করুন।");
+          return;
+        }
+
+        createUserWithEmailAndPassword(auth, email, password);
+      }
+
+      createUserWithEmailAndPassword(auth, email, password)
+        .then(async (userCredential) => {
+          const user = userCredential.user;
+          try {
+            await setDoc(doc(db, "users", user.uid), {
+              name,
+              email,
+              phone,
+              createdAt: new Date()
+            });
+            alert("✅ রেজিস্ট্রেশন সফল হয়েছে! এখন লগইন করুন।");
+            document.querySelector('[data-tab="login"]').click();
+          } catch (error) {
+            alert("❌ ইউজার তথ্য সংরক্ষণে সমস্যা: " + error.message);
+          }
+        })
+        .catch(error => {
+          alert("❌ রেজিস্ট্রেশন ব্যর্থ: " + error.message);
+        });
+
+
     });
 
-    //  Login Form Submit Handler
-    const loginForm = document.getElementById('loginForm');
-    loginForm.addEventListener('submit', function (e) {
+
+
+    // Login Handler
+    document.getElementById('loginForm').addEventListener('submit', function (e) {
       e.preventDefault();
 
-      const username = document.getElementById('loginUsername').value.trim();
+      const email = document.getElementById('loginEmail').value.trim();
       const password = document.getElementById('loginPassword').value;
 
-      if (username === registeredUser.name && password === registeredUser.password) {
-        alert("✅ Login successful!");
-        window.location.href = "index.html";
-      } else {
-        alert("❌ Incorrect username or password. Please try again.");
-      }
+      signInWithEmailAndPassword(auth, email, password)
+        .then(() => {
+          alert("✅ লগইন সফল!");
+          window.location.href = "user.html"; // redirect
+        })
+        .catch(error => {
+          alert("❌ লগইন ব্যর্থ: " + error.message);
+        });
     });
   </script>
-
 </body>
 
 </html>

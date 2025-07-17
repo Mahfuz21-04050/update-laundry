@@ -2,12 +2,185 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Admin Dashboard</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script type="module">
+    // তোমার Firebase config
+    const firebaseConfig = {
+      apiKey: "AIzaSyCrPUFMdKuxMDV16RIu833yvzw-a8WxCSg",
+      authDomain: "smart-laundry-2d523.firebaseapp.com",
+      projectId: "smart-laundry-2d523",
+      storageBucket: "smart-laundry-2d523.appspot.com",
+      messagingSenderId: "7431686498",
+      appId: "1:7431686498:web:d4d1a4377327c7eafac43b",
+      measurementId: "G-K6W312NY4M",
+    };
+
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      getDocs,
+      updateDoc,
+      deleteDoc,
+      doc,
+
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const productListEl = document.getElementById("productList");
+    const template = document.getElementById("productTemplate").content;
+
+
+
+
+    async function loadOrders() {
+      const orderTableBody = document.querySelector("#orderSection tbody");
+      orderTableBody.innerHTML = ""; // Clear old data
+
+      const summaryTotalOrders = document.getElementById("totalOrders");
+      const summaryTotalIncome = document.getElementById("totalIncome");
+
+      let totalOrders = 0;
+      let totalIncome = 0;
+      let pendingCount = 0,
+        completedCount = 0;
+
+      const querySnapshot = await getDocs(collection(db, "orders"));
+      querySnapshot.forEach((docSnap) => {
+        const order = docSnap.data();
+        const id = docSnap.id;
+
+        totalOrders++;
+        totalIncome += order.grandTotal || 0;
+
+        if (order.status === "Pending") pendingCount++;
+        else if (order.status === "Completed") completedCount++;
+
+        const itemList = order.items
+          .map((item) => {
+            return `${item.qty} × ${item.name} (৳${item.subtotal})`;
+          })
+          .join("<br>");
+
+        const timestamp = order.timestamp?.seconds
+          ? new Date(order.timestamp.seconds * 1000)
+          : null;
+        const orderDate = timestamp ? timestamp.toLocaleDateString() : "N/A";
+        const orderTime = timestamp ? timestamp.toLocaleTimeString() : "N/A";
+
+        const row = document.createElement("tr");
+        row.className = "border-t";
+        row.innerHTML = `
+          <td class="py-3 px-4">${order.name}</td>
+          <td class="py-3 px-4">${order.phone}</td>
+          <td class="py-3 px-4">${orderDate}</td>
+          <td class="py-3 px-4">${orderTime}</td>
+          <td class="py-3 px-4">${order.address}</td>
+          <td class="py-3 px-4 text-sm">${itemList}<br><strong>Total: ৳${order.grandTotal}</strong></td>
+          <td class="py-3 px-4">
+            <select class="status-dropdown border p-1 rounded">
+              <option value="Pending" ${order.status === "Pending" ? "selected" : ""
+          }>Pending</option>
+              <option value="Completed" ${order.status === "Completed" ? "selected" : ""
+          }>Completed</option>
+            </select>
+          </td>
+          <td class="py-3 px-4">
+            <button class="delete-btn text-red-500 hover:underline">🗑</button>
+          </td>
+        `;
+
+        // Delete handler
+        row.querySelector(".delete-btn").addEventListener("click", async () => {
+          if (confirm("Are you sure to delete this order?")) {
+            await deleteDoc(doc(db, "orders", id));
+            loadOrders(); // Refresh
+          }
+        });
+
+        // Status change handler
+        row
+          .querySelector(".status-dropdown")
+          .addEventListener("change", async (e) => {
+            const newStatus = e.target.value;
+            await updateDoc(doc(db, "orders", id), { status: newStatus });
+            loadOrders(); // Refresh to update counts and summary
+          });
+
+        orderTableBody.appendChild(row);
+      });
+
+      summaryTotalOrders.textContent = totalOrders;
+      summaryTotalIncome.textContent = `৳${totalIncome}`;
+      document.getElementById("pendingCount").textContent = pendingCount;
+      document.getElementById("completedCount").textContent = completedCount;
+    }
+
+    async function loadProducts() {
+      const querySnapshot = await getDocs(collection(db, "products"));
+      productListEl.innerHTML = ''; // Clear before loading
+
+      querySnapshot.forEach((docSnap) => {
+        const product = docSnap.data();
+        const id = docSnap.id;
+
+        const clone = document.importNode(template, true);
+        clone.querySelector(".product-img").src = product.img;
+        clone.querySelector(".product-img").alt = product.name;
+        clone.querySelector(".product-name").textContent = product.name;
+        clone.querySelector(".current-price span").textContent = product.price;
+
+        const priceInput = clone.querySelector(".price-input");
+        const setPriceBtn = clone.querySelector(".set-price-btn");
+        const editBtn = clone.querySelector(".edit-btn");
+        const priceField = clone.querySelector(".price-field");
+        const priceDisplay = clone.querySelector(".current-price span");
+
+        editBtn.addEventListener("click", () => {
+          priceInput.classList.remove("hidden");
+          priceField.value = product.price;
+        });
+
+        setPriceBtn.addEventListener("click", async () => {
+          const newPrice = parseFloat(priceField.value);
+          if (!isNaN(newPrice) && newPrice > 0) {
+            await updateDoc(doc(db, "products", id), { price: newPrice });
+            priceDisplay.textContent = newPrice;
+            priceInput.classList.add("hidden");
+          }
+        });
+
+        productListEl.appendChild(clone);
+      });
+    }
+
+    // সার্চ বক্স ইভেন্ট একবার বসানো হলো, লুপের বাইরে
+    document.getElementById("searchBox").addEventListener("input", function () {
+      const keyword = this.value.toLowerCase();
+      document.querySelectorAll("#orderSection tbody tr").forEach((row) => {
+        row.style.display = row.innerText.toLowerCase().includes(keyword) ? "" : "none";
+      });
+    });
+
+    loadProducts();
+    loadOrders();
+
+    window.toggleSection = function (sectionId) {
+      const section = document.getElementById(sectionId);
+      section.style.display = section.style.display === "none" ? "block" : "none";
+    };
+
+
+
+  </script>
+
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     }
 
     .card {
@@ -28,16 +201,22 @@
       <h2 class="text-2xl font-bold mb-6 tracking-wide">🔧 Admin Panel</h2>
       <nav class="space-y-2">
         <button onclick="toggleSection('priceSection')"
-          class="w-full text-left py-2 px-4 bg-[#2f3640] rounded hover:bg-[#3d3d3d]">Set Prices</button>
+          class="w-full text-left py-2 px-4 bg-[#2f3640] rounded hover:bg-[#3d3d3d]">
+          Set Prices
+        </button>
         <button onclick="toggleSection('orderSection')"
-          class="w-full text-left py-2 px-4 bg-[#2f3640] rounded hover:bg-[#3d3d3d]">Orders</button>
-        <a href="#" class="block py-2 px-4 bg-[#2f3640] rounded hover:bg-[#3d3d3d]">Users</a>
+          class="w-full text-left py-2 px-4 bg-[#2f3640] rounded hover:bg-[#3d3d3d]">
+          Orders
+        </button>
+        <button id="userBtn" class="w-full text-left py-2 px-4 bg-[#2f3640] rounded hover:bg-[#3d3d3d]"
+          title="Admin Email">User
+
+        </button>
       </nav>
     </div>
 
     <!-- Main Content -->
     <div class="flex-1 p-6 space-y-10">
-
       <!-- Product Pricing Section -->
       <div id="priceSection">
         <h1 class="text-3xl font-bold text-gray-800 mb-6">🧺 Set Product Prices</h1>
@@ -47,101 +226,72 @@
         <template id="productTemplate">
           <div class="card bg-white rounded-2xl shadow-md p-4 w-full sm:w-[300px] flex items-start flex-col gap-2">
             <div class="flex items-center gap-4 w-full">
-              <img class="product-img w-20 h-20 rounded-lg border object-cover" src="" alt="Product">
+              <img class="product-img w-20 h-20 rounded-lg border object-cover" src="" alt="Product" />
               <div class="flex-1">
                 <h3 class="product-name text-lg font-semibold text-gray-800"></h3>
-                <p class="current-price text-sm text-gray-600">৳ <span>0</span></p>
+                <p class="current-price text-sm text-gray-600">
+                  ৳ <span>0</span>
+                </p>
               </div>
             </div>
             <div class="price-input hidden w-full">
-              <input type="number" class="price-field mt-2 p-2 border rounded w-full" placeholder="Enter New Price">
-              <button class="set-price-btn mt-2 bg-blue-600 text-white px-4 py-1 rounded">Finish</button>
+              <input type="number" class="price-field mt-2 p-2 border rounded w-full" placeholder="Enter New Price" />
+              <button class="set-price-btn mt-2 bg-blue-600 text-white px-4 py-1 rounded">
+                Finish
+              </button>
             </div>
-            <button class="edit-btn text-sm text-blue-600 hover:underline self-end">Set Price</button>
+            <button class="edit-btn text-sm text-blue-600 hover:underline self-end">
+              Set Price
+            </button>
           </div>
         </template>
       </div>
 
-      <!-- Order List -->
-      <div id="orderSection" style="display:none;">
-        <h2 class="text-3xl font-bold mb-6 text-gray-800">📦 Orders Overview</h2>
-        <div class="overflow-x-auto bg-white rounded-2xl shadow-lg">
-          <table class="min-w-full text-sm text-left">
-            <thead class="bg-gray-200 text-gray-700">
-              <tr>
-                <th class="py-3 px-4">Customer Name</th>
-                <th class="py-3 px-4">Mobile</th>
-                <th class="py-3 px-4">Order Date</th>
-                <th class="py-3 px-4">Pickup Time</th>
-                <th class="py-3 px-4">Location</th>
-                <th class="py-3 px-4">Items</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="border-t">
-                <td class="py-3 px-4">Rakib Hasan</td>
-                <td class="py-3 px-4">017xxxxxxxx</td>
-                <td class="py-3 px-4">2025-05-20</td>
-                <td class="py-3 px-4">3:00 PM</td>
-                <td class="py-3 px-4">Dhanmondi, Dhaka</td>
-                <td class="py-3 px-4">2 Cotton, 1 Shari</td>
-              </tr>
-            </tbody>
-          </table>
+      <!-- Summary Section -->
+      <div id="summarySection" class="mb-6 grid grid-cols-4 gap-6">
+        <div class="bg-white rounded-xl shadow p-4 text-center">
+          <h3 class="text-gray-600 text-sm">Total Orders</h3>
+          <p id="totalOrders" class="text-3xl font-bold text-blue-600">0</p>
+        </div>
+        <div class="bg-white rounded-xl shadow p-4 text-center">
+          <h3 class="text-gray-600 text-sm">Total Income</h3>
+          <p id="totalIncome" class="text-3xl font-bold text-green-600">৳0</p>
+        </div>
+        <div class="bg-white rounded-xl shadow p-4 text-center">
+          <h3 class="text-gray-600 text-sm">Pending Orders</h3>
+          <p id="pendingCount" class="text-3xl font-bold text-yellow-500">0</p>
+        </div>
+        <div class="bg-white rounded-xl shadow p-4 text-center">
+          <h3 class="text-gray-600 text-sm">Completed Orders</h3>
+          <p id="completedCount" class="text-3xl font-bold text-green-700">0</p>
         </div>
       </div>
 
+
+      <!-- Order List -->
+      <div id="orderSection" style="display: none">
+        <h2 class="text-3xl font-bold mb-6 text-gray-800">📦 Orders Overview</h2>
+        <div class="overflow-x-auto bg-white rounded-2xl shadow-lg">
+          <input type="text" id="searchBox" placeholder="Search orders..." class="p-3 border rounded m-4 w-full" />
+          <table class="min-w-full">
+            <thead>
+              <tr>
+                <th class="py-2 px-4 border-b">Name</th>
+                <th class="py-2 px-4 border-b">Phone</th>
+                <th class="py-2 px-4 border-b">Order Date</th>
+                <th class="py-2 px-4 border-b">Order Time</th>
+                <th class="py-2 px-4 border-b">Address</th>
+                <th class="py-2 px-4 border-b">Items</th>
+                <th class="py-2 px-4 border-b">Status</th>
+                <th class="py-2 px-4 border-b">Delete</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
-
-  <script>
-    const products = [
-      { name: "Cotton", img: "cotton.png", price: 100 },
-      { name: "Shari", img: "sarri.png", price: 120 },
-      { name: "Panjabi", img: "panjabi.png", price: 140 },
-      { name: "Pant", img: "p.png", price: 90 },
-      { name: "Shirt", img: "tshirt.png", price: 80 },
-      { name: "3-piece", img: "3pice.png", price: 200 }
-    ];
-
-    const productListEl = document.getElementById('productList');
-    const template = document.getElementById('productTemplate').content;
-
-    products.forEach(product => {
-      const clone = document.importNode(template, true);
-      clone.querySelector('.product-img').src = product.img;
-      clone.querySelector('.product-img').alt = product.name;
-      clone.querySelector('.product-name').textContent = product.name;
-      clone.querySelector('.current-price span').textContent = product.price;
-
-      const priceInput = clone.querySelector('.price-input');
-      const setPriceBtn = clone.querySelector('.set-price-btn');
-      const editBtn = clone.querySelector('.edit-btn');
-      const priceField = clone.querySelector('.price-field');
-      const priceDisplay = clone.querySelector('.current-price span');
-
-      editBtn.addEventListener('click', () => {
-        priceInput.classList.remove('hidden');
-        priceField.value = product.price;
-      });
-
-      setPriceBtn.addEventListener('click', () => {
-        const newPrice = parseFloat(priceField.value);
-        if (!isNaN(newPrice) && newPrice > 0) {
-          product.price = newPrice;
-          priceDisplay.textContent = newPrice;
-          priceInput.classList.add('hidden');
-        }
-      });
-
-      productListEl.appendChild(clone);
-    });
-
-    function toggleSection(sectionId) {
-      const section = document.getElementById(sectionId);
-      section.style.display = section.style.display === 'none' ? 'block' : 'none';
-    }
-  </script>
 </body>
 
 </html>
