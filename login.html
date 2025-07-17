@@ -151,21 +151,40 @@
 
 
     // Login Handler
-    document.getElementById('loginForm').addEventListener('submit', function (e) {
+
+
+
+    document.getElementById('loginForm').addEventListener('submit', async function (e) {
       e.preventDefault();
+      document.getElementById('loginError').textContent = '';
 
       const email = document.getElementById('loginEmail').value.trim();
       const password = document.getElementById('loginPassword').value;
 
-      signInWithEmailAndPassword(auth, email, password)
-        .then(() => {
-          alert("✅ লগইন সফল!");
-          window.location.href = "user.html"; // redirect
-        })
-        .catch(error => {
-          alert("❌ লগইন ব্যর্থ: " + error.message);
-        });
+      try {
+        // Step 1: Shopowner হিসেবে email আছে কি না তা চেক করো
+        const shopRef = collection(db, "users");
+        const q = query(shopRef, where("email", "==", email));
+        const snapshot = await getDocs(q);
+
+        if (snapshot.empty) {
+          // যদি shopowners এ email না থাকে
+          document.getElementById('loginError').textContent = "❌ You are not a registered user.";
+          return;
+        }
+
+        // Step 2: যদি থাকেই, তাহলে Firebase Auth দিয়ে সাইন ইন করো
+        await signInWithEmailAndPassword(auth, email, password);
+
+        document.getElementById('loginError').textContent = "";
+        alert("✅ Login successful!");
+        window.location.href = "admin.html"; // redirect after login
+
+      } catch (error) {
+        document.getElementById('loginError').textContent = "❌ " + error.message;
+      }
     });
+
   </script>
 </body>
 
