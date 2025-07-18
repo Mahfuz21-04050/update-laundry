@@ -132,6 +132,8 @@ body {
   color: #ffe082;
 }
 
+
+
 /* Hero Section */
 .hero {
   position: relative;
@@ -211,10 +213,14 @@ body {
 
 .sidebar {
   min-width: 240px;
-  background: #fff;
+  background: url('laundry-aside.png') no-repeat center center / cover;
   border-radius: 10px;
   box-shadow: 0 2px 12px rgba(10, 110, 189, 0.05);
   padding: 26px 0;
+  height: fit-content;
+  position: relative;
+  color: #fff;
+  overflow: hidden;
 }
 
 .sidebar h3 {
@@ -222,6 +228,23 @@ body {
   font-size: 1.15em;
   color: #0a6ebd;
 }
+
+
+
+.sidebar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45); /* dark overlay */
+  z-index: 0;
+}
+
+.sidebar * {
+  position: relative;
+  z-index: 1;
+}
+
+
 
 .categories {
   list-style: none;
@@ -232,7 +255,7 @@ body {
   margin: 12px 0;
   font-size: 1.05em;
   cursor: pointer;
-  color: #333;
+  color: #fff;
   transition: color 0.2s;
 }
 
