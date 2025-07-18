@@ -1,0 +1,329 @@
+html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f7f7f7;
+    }
+
+    .navbar {
+      background: #1abc9c;
+      color: #fff;
+      padding: 0 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      min-height: 56px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .navbar>div {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding-left: 24px;
+    }
+
+    .navbar a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 17px;
+      padding: 18px 8px;
+      border-bottom: 2px solid transparent;
+      transition: border .2s;
+    }
+
+    .navbar a:hover {
+      border-bottom: 2px solid #fff;
+    }
+
+    #balanceSection {
+      background: #f1f1f1;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 14px;
+      padding: 8px 24px;
+      font-size: 16px;
+      flex-wrap: wrap;
+    }
+
+    #balanceSection span {
+      font-weight: bold;
+      color: #27ae60;
+    }
+
+    #balanceSection button {
+      background: #3498db;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 8px 16px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background .2s;
+    }
+
+    #balanceSection button:hover {
+      background: #217dbb;
+    }
+
+    #landing {
+      padding: 48px 10px 40px 10px;
+      text-align: center;
+      background: #f9f9f9;
+    }
+
+    #landing h1 {
+      font-size: 2.5rem;
+      color: #1abc9c;
+      margin-bottom: 12px;
+    }
+
+    #landing p {
+      font-size: 1.2rem;
+      color: #444;
+    }
+
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      min-height: 350px;
+      background: #fff;
+      margin-bottom: 24px;
+    }
+
+    .sidebar {
+      background: #dff9fb;
+      width: 220px;
+      min-width: 180px;
+      padding: 24px 14px;
+      box-shadow: 2px 0 8px rgba(0, 0, 0, 0.04);
+      border-radius: 0 12px 12px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .sidebar h3 {
+      margin: 10px 0 4px 0;
+      color: #0984e3;
+    }
+
+    .sidebar button {
+      background: #fff;
+      border: 1px solid #1abc9c;
+      color: #1abc9c;
+      border-radius: 6px;
+      padding: 8px 0;
+      margin-bottom: 6px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background .2s, color .2s;
+    }
+
+    .sidebar button:hover {
+      background: #1abc9c;
+      color: #fff;
+    }
+
+    .main {
+      flex: 1;
+      padding: 30px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 22px;
+      justify-content: center;
+      align-items: flex-start;
+      min-width: 220px;
+    }
+
+    .item-card {
+      border: 1px solid #ddd;
+      border-radius: 12px;
+      width: 210px;
+      background: #fff;
+      text-align: center;
+      padding: 12px 8px 18px 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+      transition: box-shadow .2s;
+    }
+
+    .item-card:hover {
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
+    }
+
+    .item-card img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+
+    .item-card input {
+      margin-top: 10px;
+      padding: 6px;
+      width: 80%;
+      border-radius: 5px;
+      border: 1px solid #b2bec3;
+      font-size: 15px;
+    }
+
+    .submit-area {
+      text-align: center;
+      margin: 28px 0 20px 0;
+    }
+
+    .submit-btn {
+      background: #27ae60;
+      color: #fff;
+      padding: 14px 32px;
+      border: none;
+      font-size: 17px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background .2s;
+    }
+
+    .submit-btn:hover {
+      background: #168f4d;
+    }
+
+    #history {
+      padding: 40px 10px;
+      background: #ecf0f1;
+      text-align: center;
+    }
+
+    #history h2 {
+      color: #1abc9c;
+      margin-bottom: 10px;
+    }
+
+    #history p {
+      color: #636e72;
+      font-size: 1.1rem;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 100;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.4);
+      overflow: auto;
+    }
+
+    .modal-content {
+      background: #fff;
+      margin: 5% auto;
+      padding: 24px 20px 18px 20px;
+      border-radius: 12px;
+      width: 95%;
+      max-width: 430px;
+      font-size: 16px;
+      box-shadow: 0 0 18px rgba(0, 0, 0, 0.18);
+      position: relative;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 30px;
+      font-weight: bold;
+      cursor: pointer;
+      position: absolute;
+      right: 18px;
+      top: 10px;
+      transition: color .2s;
+    }
+
+    .close:hover {
+      color: #e74c3c;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+
+    #billDetails {
+      margin-top: 18px;
+    }
+
+    @media (max-width: 900px) {
+      .container {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        border-radius: 0 0 12px 12px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 10px 20px;
+        justify-content: flex-start;
+      }
+
+      .main {
+        padding: 20px 8px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .navbar>div {
+        gap: 10px;
+        padding-left: 10px;
+      }
+
+      #balanceSection {
+        padding: 8px 10px;
+        font-size: 15px;
+      }
+
+      .sidebar {
+        padding: 16px 4px;
+      }
+
+      .main {
+        gap: 12px;
+      }
+
+      .item-card {
+        width: 95vw;
+        max-width: 340px;
+      }
+
+      .modal-content {
+        max-width: 98vw;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .navbar {
+        flex-direction: column;
+        min-height: 40px;
+      }
+
+      .navbar>div {
+        padding-left: 0;
+      }
+
+      #balanceSection {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+    }
