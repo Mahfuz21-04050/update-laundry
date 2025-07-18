@@ -29,6 +29,7 @@
           <input type="password" id="loginPassword" placeholder="Enter Password" required>
         </div>
         <button type="submit">Login</button>
+        <div class="error" id="loginError"></div>
         <p>Don't have an account? <a href="#" data-tab="register">Register Now</a></p>
       </form>
     </div>
@@ -64,7 +65,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getFirestore, doc, setDoc, getDocs, collection, query, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
     const firebaseConfig = {
@@ -162,14 +163,15 @@
       const password = document.getElementById('loginPassword').value;
 
       try {
-        // Step 1: Shopowner হিসেবে email আছে কি না তা চেক করো
-        const shopRef = collection(db, "users");
-        const q = query(shopRef, where("email", "==", email));
+        // Step 1: user হিসেবে email আছে কি না তা চেক করো
+        const userRef = collection(db, "users");
+        // Query to check if email exists in users collection
+        const q = query(userRef, where("email", "==", email));
         const snapshot = await getDocs(q);
 
         if (snapshot.empty) {
-          // যদি shopowners এ email না থাকে
-          document.getElementById('loginError').textContent = "❌ You are not a registered user.";
+          // যদি users এ email না থাকে
+          document.getElementById('loginError').textContent = "❌ You are not a registered user .";
           return;
         }
 
@@ -178,7 +180,7 @@
 
         document.getElementById('loginError').textContent = "";
         alert("✅ Login successful!");
-        window.location.href = "admin.html"; // redirect after login
+        window.location.href = "user.html"; // redirect after login
 
       } catch (error) {
         document.getElementById('loginError').textContent = "❌ " + error.message;
