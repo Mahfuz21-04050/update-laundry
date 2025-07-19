@@ -327,6 +327,15 @@
         let html = "";
         snapshot.forEach((doc) => {
           const order = doc.data();
+          const readableDate = order.timestamp?.toDate().toLocaleString("bn-BD", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true
+          });
+
 
           const itemListHTML = (order.items || [])
             .map(item => `<li>${item.qty} × ${item.name} — ৳${item.subtotal}</li>`)
@@ -336,7 +345,7 @@
       <div class="history-item">
         
         <strong>Name:</strong> ${order.name}<br>
-        <strong>Date:</strong> ${order.timestamp}<br>
+        <strong>Date:</strong> ${readableDate}<br>
         <strong>Phone:</strong> ${order.phone || 'N/A'}<br>
         <strong>Address:</strong> ${order.address || 'N/A'}<br>
         <strong>Items:</strong>
