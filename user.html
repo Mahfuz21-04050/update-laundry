@@ -342,17 +342,24 @@
             .join('');
 
           html += `
-      <div class="history-item">
-        
-        <strong>Name:</strong> ${order.name}<br>
-        <strong>Date:</strong> ${readableDate}<br>
-        <strong>Phone:</strong> ${order.phone || 'N/A'}<br>
-        <strong>Address:</strong> ${order.address || 'N/A'}<br>
-        <strong>Items:</strong>
-        <ul class="item-list">${itemListHTML}</ul>
-        <strong>Total:</strong> ৳${order.grandTotal}
-      </div>
-    `;
+  <div class="history-item">
+    <div class="order-header">
+      <span class="order-date">${readableDate}</span>
+      <span class="order-total">৳${order.grandTotal}</span>
+    </div>
+
+    <div class="order-info">
+      <p><strong>👤 Name:</strong> ${order.name}</p>
+      <p><strong>📞 Phone:</strong> ${order.phone || 'N/A'}</p>
+      <p><strong>🏠 Address:</strong> ${order.address || 'N/A'}</p>
+    </div>
+
+    <div class="order-items">
+      <strong>📦 Items:</strong>
+      <ul class="item-list">${itemListHTML}</ul>
+    </div>
+  </div>
+`;
         });
 
         orderListDiv.innerHTML = html;

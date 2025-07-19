@@ -327,3 +327,79 @@ html {
         gap: 6px;
       }
     }
+
+
+
+    /*order history styles*/
+    .history-item {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 15px 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease;
+  border-left: 6px solid #3b82f6;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.history-item:hover {
+  transform: scale(1.01);
+}
+
+.order-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  font-weight: bold;
+  color: #1d4ed8;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 6px;
+  font-size: 16px;
+}
+
+.order-info p,
+.order-items {
+  margin: 8px 0;
+  color: #374151;
+  font-size: 15px;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.item-list {
+  margin: 5px 0 0 18px;
+  padding-left: 0;
+  list-style-type: disc;
+  color: #1e293b;
+  font-size: 14px;
+}
+
+.order-total {
+  color: #10b981;
+}
+
+@media (max-width: 480px) {
+  .history-item {
+    padding: 12px;
+    margin: 10px 0;
+  }
+
+  .order-header {
+    flex-direction: column;
+    align-items: flex-start;
+    font-size: 15px;
+  }
+
+  .order-total {
+    margin-top: 4px;
+    font-size: 15px;
+  }
+
+  .order-info p,
+  .order-items,
+  .item-list {
+    font-size: 14px;
+  }
+}
