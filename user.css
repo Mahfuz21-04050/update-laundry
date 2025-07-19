@@ -89,22 +89,29 @@ html {
       background: #217dbb;
     }
 
-    #landing {
-      padding: 48px 10px 40px 10px;
-      text-align: center;
-      background: #f9f9f9;
-    }
+   #landing {
+  padding: 48px 10px 40px 10px;
+  text-align: center;
+  background: 
+    linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+    url('https://i.imgur.com/Tf6JfED.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
+}
+#landing h1 {
+  font-size: 2.5rem;
+  color: #ffffff;
+  margin-bottom: 12px;
+}
 
-    #landing h1 {
-      font-size: 2.5rem;
-      color: #1abc9c;
-      margin-bottom: 12px;
-    }
+#landing p {
+  font-size: 1.2rem;
+  color: #f1f1f1;
+}
 
-    #landing p {
-      font-size: 1.2rem;
-      color: #444;
-    }
+
 
     .container {
       display: flex;
@@ -114,40 +121,40 @@ html {
       margin-bottom: 24px;
     }
 
-    .sidebar {
-      background: #dff9fb;
-      width: 220px;
-      min-width: 180px;
-      padding: 24px 14px;
-      box-shadow: 2px 0 8px rgba(0, 0, 0, 0.04);
-      border-radius: 0 12px 12px 0;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
+.sidebar {
+  background-image: url('https://i.imgur.com/vMT8zV0.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 20px;
+  border-radius: 12px;
+  color: white;
+  min-height: 300px; /* optional */
+}
 
-    .sidebar h3 {
-      margin: 10px 0 4px 0;
-      color: #0984e3;
-    }
+  .sidebar {
+  position: relative;
+  overflow: hidden;
+  color: white;
+}
 
-    .sidebar button {
-      background: #fff;
-      border: 1px solid #1abc9c;
-      color: #1abc9c;
-      border-radius: 6px;
-      padding: 8px 0;
-      margin-bottom: 6px;
-      font-size: 15px;
-      cursor: pointer;
-      transition: background .2s, color .2s;
-    }
+.sidebar::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4); /* black overlay */
+  z-index: 0;
+}
 
-    .sidebar button:hover {
-      background: #1abc9c;
-      color: #fff;
-    }
+.shopListContainer {
+  position: relative;
+  z-index: 1;
+}
 
+
+    
     .main {
       flex: 1;
       padding: 30px 20px;
