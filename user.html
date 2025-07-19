@@ -153,7 +153,7 @@
     async function loadShops() {
       const shopSnapshot = await getDocs(collection(db, "shopowners"));
       const container = document.querySelector(".shopListContainer");
-      container.innerHTML = "<h3>Shops</h3>";
+      container.innerHTML = "<h3>Active Shops</h3>";
 
       shopSnapshot.forEach((docSnap) => {
         const data = docSnap.data();
