@@ -371,6 +371,29 @@
 
 
 
+    // History টগল করার জন্য
+    const historySection = document.getElementById("history");
+    const historyLink = document.querySelector('a[href="#history"]');
+
+    historyLink.addEventListener("click", function (e) {
+      e.preventDefault(); // Prevent jump
+      if (historySection.style.display === "none" || !historySection.style.display) {
+        historySection.style.display = "block";
+        historySection.scrollIntoView({ behavior: "smooth" });
+      } else {
+        historySection.style.display = "none";
+      }
+    });
+
+    // Default এ লুকানো রাখো
+    document.addEventListener("DOMContentLoaded", () => {
+      historySection.style.display = "none";
+    });
+
+
+
+
+
 
     // ইউজার লগইন থাকলে সেট করো
     onAuthStateChanged(auth, (user) => {
