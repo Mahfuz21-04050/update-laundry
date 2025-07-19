@@ -1,61 +1,103 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 
 <head>
-  <meta charset="UTF-8" />
-  <title>Hero Test</title>
+  <meta charset="UTF-8">
+  <title>Smart Laundry</title>
+  <!-- Firebase App (core) -->
+  <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app-compat.js"></script>
+  <!-- Firebase Firestore -->
+  <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore-compat.js"></script>
+
   <style>
     body {
+      font-family: 'Segoe UI', sans-serif;
       margin: 0;
-      font-family: sans-serif;
-      background: #eee;
       padding: 20px;
+      background: #f0f4f8;
+      color: #333;
     }
 
-    .hero {
-      position: relative;
-      background-image: url('https://i.imgur.com/ZZLKvEP.png');
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: cover;
-      border-radius: 14px;
-      min-height: 300px;
-      padding: 46px 36px;
-      box-shadow: 0 4px 18px rgba(10, 110, 189, 0.09);
+    h2 {
+      text-align: center;
+      color: #2a2a2a;
+    }
+
+    .navbar {
       display: flex;
-      flex-direction: column;
       justify-content: center;
-      color: #fff;
-      font-size: 2rem;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .navbar a {
+      text-decoration: none;
+      color: #007BFF;
       font-weight: bold;
-      overflow: hidden;
     }
 
-    .hero::after {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(to right, rgba(10, 110, 189, 0.5), rgba(0, 0, 0, 0.2));
-      border-radius: 14px;
-      z-index: 0;
+    .history-item {
+      background: #fff;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
-    .hero * {
-      position: relative;
-      z-index: 1;
+    .item-list {
+      margin-left: 15px;
     }
   </style>
 </head>
 
 <body>
 
-  <div class="hero">
-    <h1>Smart Laundry</h1>
-    <p>Make your laundry smarter and faster</p>
+  <div id="orderList">
+    <h2>অর্ডার লিস্ট</h2>
   </div>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyCrPUFMdKuxMDV16RIu833yvzw-a8WxCSg",
+      authDomain: "smart-laundry-2d523.firebaseapp.com",
+      projectId: "smart-laundry-2d523",
+      storageBucket: "smart-laundry-2d523.appspot.com",
+      messagingSenderId: "7431686498",
+      appId: "1:7431686498:web:d4d1a4377327c7eafac43b",
+      measurementId: "G-K6W312NY4M"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    async function fetchOrders() {
+      try {
+        const snapshot = await db.collection("orders").get();
+        const orderListDiv = document.getElementById("orderList");
+
+        snapshot.forEach((doc) => {
+          const order = doc.data();
+          orderListDiv.innerHTML += `
+            <div class="history-item">
+              <strong>Order ID:</strong> ${doc.id}<br>
+              <strong>Name:</strong> ${order.name}<br>
+              <strong>Phone:</strong> ${order.phone || 'N/A'}<br>
+              <strong>Items:</strong>${order.items.name}<br>
+              <strong>Price:</strong> ${order.email || 'N/A'}<br>
+              <ul class="item-list">
+                ${(order.items || []).map(item => `<li>${item}</li>`).join('')}
+              </ul>
+            </div>
+          `;
+        });
+      } catch (error) {
+        console.error("ডাটা আনার সময় সমস্যা:", error);
+      }
+    }
+
+    fetchOrders();
+  </script>
 
 </body>
 

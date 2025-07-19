@@ -1,68 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <title>Laundry Service</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-  <link rel="stylesheet" href="user.css">
-
-</head>
-
-<body>
-  <div class="navbar">
-    <div>
-
-
-      <a href="#history" onclick="fetchOrders()">History</a>
-      <a href="#" class="nav-link"><i class="fa-solid fa-tags"></i>Offers</a>
-      <a href="#" class="nav-link"><i class="fa-solid fa-phone"></i>যোগাযোগ</a>
-      <div id="userEmailDisplay" style="cursor:pointer; font-weight:bold; color:#2980b9; margin-left:12px;"></div>
-    </div>
-  </div>
-  <div id="balanceSection">
-    <div>
-      💰 ব্যালেন্স: <span id="userBalance">Loading...</span> ৳
-    </div>
-    <button onclick="goToRechargePage()">🔄 রিচার্জ করুন</button>
-  </div>
-  <section id="landing">
-    <h1>Welcome to Our Laundry Service</h1>
-    <p>Clean clothes, happy life!</p>
-  </section>
-  <section id="service" class="container">
-    <div class="sidebar">
-      <div class="shopListContainer"></div>
-    </div>
-
-
-    <div class="main">
-      <p>Loading products...</p>
-    </div>
-  </section>
-  <div class="submit-area">
-    <button class="submit-btn" onclick="generateBill()">Select Shop & Submit</button>
-  </div>
-  <section id="history">
-    <h2>🧺 Past Orders</h2>
-
-    <p>Loading...</p>
-    <div id="orderlist"></div>
-  </section>
-  <div id="billModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="document.getElementById('billModal').style.display='none'">&times;</span>
-      <h2>🧾 Order Bill</h2>
-      <input type="text" id="customerName" class="input-field" placeholder="Enter your name">
-      <input type="text" id="customerPhone" class="input-field" placeholder="Enter mobile number">
-      <input type="text" id="customerAddress" class="input-field" placeholder="Enter address">
-      <div id="billDetails"></div>
-      <button class="submit-btn" onclick="submitOrder()">Confirm & Submit Order</button>
-    </div>
-  </div>
-  <script type="module">
-    // Firebase Imports
+// Firebase Imports
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
     import { getFirestore, collection, getDocs, addDoc, doc, getDoc, updateDoc, increment, query, where, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
@@ -185,6 +121,34 @@
       document.getElementById("userBalance").innerText = `${balance} ৳`;
     }
 
+    // Load order history
+    async function loadOrderHistory(email) {
+      const q = query(collection(db, "orders"), where("email", "==", email), orderBy("timestamp", "desc"));
+      const snap = await getDocs(q);
+      const orders = snap.docs.map(doc => doc.data());
+      const container = document.getElementById("orderHistoryContent");
+      if (orders.length === 0) {
+        container.innerHTML = `<p>You don't have any previous orders yet.</p>`;
+        return;
+      }
+      container.innerHTML = "";
+      orders.forEach(order => {
+        let items = order.items.map(item =>
+          `<li>${item.name} x ${item.qty} = ${item.qty * item.price}৳</li>`
+        ).join("");
+        container.innerHTML += `
+          <div style="background:#fff; border-radius:10px; margin:12px auto; max-width:400px; box-shadow:0 2px 8px #0001; padding:16px;">
+            <div style="color:#888; font-size:13px;">${order.timestamp?.toDate?.().toLocaleString?.() || ""}</div>
+            <div><b>Name:</b> ${order.name}</div>
+            <div><b>Phone:</b> ${order.phone}</div>
+            <div><b>Address:</b> ${order.address}</div>
+            <div><b>Shop:</b> ${order.shop || 'N/A'}</div>
+            <div><b>Items:</b><ul>${items}</ul></div>
+            <div><b>Total:</b> ${order.grandTotal}৳</div>
+          </div>
+        `;
+      });
+    }
 
     // Generate bill
     window.generateBill = async function () {
@@ -306,58 +270,21 @@
 
 
 
-    async function fetchOrders() {
-      try {
-        const snapshot = await db.collection("orders").get();
-        const orderListDiv = document.getElementById("orderList");
 
-        snapshot.forEach((doc) => {
-          const order = doc.data();
-          orderListDiv.innerHTML += `
-            <div class="history-item">
-              <strong>Order ID:</strong> ${doc.id}<br>
-              <strong>Name:</strong> ${order.name}<br>
-              <strong>Phone:</strong> ${order.phone || 'N/A'}<br>
-              <strong>Items:</strong>${order.items.name}<br>
-              <strong>Price:</strong> ${order.email || 'N/A'}<br>
-              <ul class="item-list">
-                ${(order.items || []).map(item => `<li>${item}</li>`).join('')}
-              </ul>
-            </div>
-          `;
-        });
-      } catch (error) {
-        console.error("ডাটা আনার সময় সমস্যা:", error);
-      }
-    }
-
-    fetchOrders();
-
-
-
-
-    // ইউজার লগইন থাকলে সেট করো
+    // On Page Load - Check Auth & Load Data
     onAuthStateChanged(auth, (user) => {
       if (!user) {
         window.location.href = "login.html";
         return;
       }
-
-      currentUser = user; // এখানে অ্যাসাইন করো
-
+      currentUser = user;
       const email = user.email;
-
       loadUserBalance(email);
       loadProducts().then(() => { });
       loadShops();
 
+
       showProducts();
       displayEmailToggle(email);
-      loadOrderHistory(email); // প্রথমবার পেইজ লোডে
+      loadOrderHistory(email);
     });
-
-
-  </script>
-</body>
-
-</html>
