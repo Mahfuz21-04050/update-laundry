@@ -292,14 +292,19 @@ body {
   background: #bbdefb;
 }
 
-.features,
-.reviews,
+.features{background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(10, 110, 189, 0.04);
+  padding: 26px 22px;
+  margin-bottom: 26px;}
+
 .how-it-works {
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(10, 110, 189, 0.04);
   padding: 26px 22px;
   margin-bottom: 26px;
+  margin-top: 26px;
 }
 
 .features-table {
@@ -320,17 +325,7 @@ body {
   color: #0a6ebd;
 }
 
-.reviews blockquote {
-  margin: 0 0 12px;
-  border-left: 4px solid #0a6ebd;
-  padding-left: 14px;
-  font-style: italic;
-  color: #444;
-}
 
-.reviews cite {
-  color: #0a6ebd;
-}
 
 .how-it-works ol {
   margin-left: 22px;
@@ -531,3 +526,76 @@ body {
     min-width: 90vw;
   }
 }
+
+/* comments */
+/* Review Section */
+.reviews {
+  padding: 30px 40px;       /* ফিচারের মত spacious padding */
+  max-width: 900px;         /* ফিচারের মত একটু বড় width */
+  margin: 0 auto;
+  background: #fff;         /* হালকা সাদা background */
+  border-radius: 15px;      /* rounded corners */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);  /* হালকা shadow */
+}
+
+.reviews h3 {
+  font-size: 2rem;          /* হেডিং বড় এবং প্রাধান্যযুক্ত */
+  margin-bottom: 25px;
+  color: #222;
+  font-weight: 700;
+}
+
+.reviews blockquote {
+  background: linear-gradient(135deg, #e6f7f1, #d4f0e6); /* subtle gradient */
+  padding: 20px 25px;       /* বড় padding, আরামদায়ক */
+  margin: 25px 0 15px;
+  border-left: 6px solid #16a085; /* left accent border */
+  border-radius: 15px;
+  font-style: italic;
+  font-size: 1.1rem;        /* ফন্ট একটু বড় */
+  color: #34495e;           /* ভালো contrast */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease;
+}
+
+.reviews blockquote:hover {
+  transform: translateX(8px); /* hover effect for subtle animation */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.reviews cite {
+  display: block;
+  margin-top: 12px;
+  font-weight: 600;
+  font-style: normal;
+  text-align: right;
+  color: #16a085;
+  font-size: 1rem;
+}
+
+/* Responsive for small devices */
+@media (max-width: 480px) {
+  .reviews {
+    padding: 20px;
+    max-width: 95%;
+  }
+
+  .reviews h3 {
+    font-size: 1.6rem;
+  }
+
+  .reviews blockquote {
+    font-size: 1rem;
+    padding: 16px 18px;
+  }
+
+  .reviews cite {
+    font-size: 0.9rem;
+  }
+}
+
+
+
+
+
+
