@@ -15,8 +15,8 @@
     <div>
 
 
-      <a href="#history" onclick="fetchOrders()">History</a>
-      <a href="#" class="nav-link"><i class="fa-solid fa-tags"></i>Offers</a>
+      <a href="#history" ">History</a>
+      <a href=" #" class="nav-link"><i class="fa-solid fa-tags"></i>Offers</a>
       <a href="#" class="nav-link"><i class="fa-solid fa-phone"></i>যোগাযোগ</a>
       <div id="userEmailDisplay" style="cursor:pointer; font-weight:bold; color:#2980b9; margin-left:12px;"></div>
     </div>
@@ -47,7 +47,7 @@
   <section id="history">
     <h2>🧺 Past Orders</h2>
 
-    <p>Loading...</p>
+    <div id="userOrders"></div>
     <div id="orderlist"></div>
   </section>
   <div id="billModal" class="modal">
@@ -302,36 +302,56 @@
       };
     }
 
+    // Load user orders
 
+    async function loadUserOrders(email) {
+      if (!email) {
+        console.error("❌ Email is undefined!");
+        return;
+      }
 
+      console.log("Inside loadUserOrders, email:", email); //
+      const orderListDiv = document.getElementById("userOrders");
+      orderListDiv.innerHTML = "Loading...";
 
-
-    async function fetchOrders() {
       try {
-        const snapshot = await db.collection("orders").get();
-        const orderListDiv = document.getElementById("orderList");
+        console.log("Loading orders for email:", email);
+        const q = query(collection(db, "orders"), where("email", "==", email));
+        const snapshot = await getDocs(q);
 
+        if (snapshot.empty) {
+          orderListDiv.innerHTML = `<p style="color: red;">আপনার কোনো অর্ডার নেই।</p>`;
+          return;
+        }
+
+        let html = "";
         snapshot.forEach((doc) => {
           const order = doc.data();
-          orderListDiv.innerHTML += `
-            <div class="history-item">
-              <strong>Order ID:</strong> ${doc.id}<br>
-              <strong>Name:</strong> ${order.name}<br>
-              <strong>Phone:</strong> ${order.phone || 'N/A'}<br>
-              <strong>Items:</strong>${order.items.name}<br>
-              <strong>Price:</strong> ${order.email || 'N/A'}<br>
-              <ul class="item-list">
-                ${(order.items || []).map(item => `<li>${item}</li>`).join('')}
-              </ul>
-            </div>
-          `;
+
+          const itemListHTML = (order.items || [])
+            .map(item => `<li>${item.qty} × ${item.name} — ৳${item.subtotal}</li>`)
+            .join('');
+
+          html += `
+      <div class="history-item">
+        
+        <strong>Name:</strong> ${order.name}<br>
+        <strong>Date:</strong> ${order.timestamp}<br>
+        <strong>Phone:</strong> ${order.phone || 'N/A'}<br>
+        <strong>Address:</strong> ${order.address || 'N/A'}<br>
+        <strong>Items:</strong>
+        <ul class="item-list">${itemListHTML}</ul>
+        <strong>Total:</strong> ৳${order.grandTotal}
+      </div>
+    `;
         });
-      } catch (error) {
-        console.error("ডাটা আনার সময় সমস্যা:", error);
+
+        orderListDiv.innerHTML = html;
+      } catch (err) {
+        orderListDiv.innerHTML = `<p style="color: red;">অর্ডার লোড করতে সমস্যা হয়েছে!</p>`;
+        console.error("loadUserOrders error:", err);
       }
     }
-
-    fetchOrders();
 
 
 
@@ -346,14 +366,16 @@
       currentUser = user; // এখানে অ্যাসাইন করো
 
       const email = user.email;
+      console.log("Logged in as:", email);
 
       loadUserBalance(email);
+      loadUserOrders(email);
       loadProducts().then(() => { });
       loadShops();
 
       showProducts();
       displayEmailToggle(email);
-      loadOrderHistory(email); // প্রথমবার পেইজ লোডে
+
     });
 
 
