@@ -17,7 +17,16 @@
 
       <a href="#history" ">History</a>
       <a href=" #" class="nav-link"><i class="fa-solid fa-tags"></i>Offers</a>
-      <a href="#" class="nav-link"><i class="fa-solid fa-phone"></i>যোগাযোগ</a>
+      <a href="#" class="nav-link" id="toggleCommentBtn"><i class="fa-solid fa-phone"></i> Comments</a>
+      <!-- এখানেই নিচে commentSection রাখো -->
+      <div id="commentSection">
+        <form id="commentForm">
+          <input type="text" id="userName" placeholder="Your Name" required />
+          <input type="text" id="userLocation" placeholder="Your Location" required />
+          <textarea id="userComment" placeholder="Write your comment..." required></textarea>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
       <div id="userEmailDisplay" style="cursor:pointer; font-weight:bold; color:#2980b9; margin-left:12px;"></div>
     </div>
   </div>
@@ -61,6 +70,8 @@
       <button class="submit-btn" onclick="submitOrder()">Confirm & Submit Order</button>
     </div>
   </div>
+
+
   <script type="module">
     // Firebase Imports
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -389,6 +400,44 @@
     document.addEventListener("DOMContentLoaded", () => {
       historySection.style.display = "none";
     });
+
+    //comment section
+
+    const toggleCommentBtn = document.getElementById('toggleCommentBtn');
+    const commentSection = document.getElementById('commentSection');
+    const commentForm = document.getElementById('commentForm');
+
+    toggleCommentBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      commentSection.classList.toggle('show');
+    });
+
+    commentForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById('userName').value.trim();
+      const location = document.getElementById('userLocation').value.trim();
+      const comment = document.getElementById('userComment').value.trim();
+      const user = auth.currentUser;
+      const email = user?.email || "Anonymous";
+
+      if (!name || !location || !comment) return;
+
+      await addDoc(collection(db, "userComments"), {
+        email,
+        name,
+        location,
+        comment,
+        timestamp: new Date()
+      });
+
+      commentForm.reset();
+      commentSection.classList.remove('show');
+      alert("Thank you for your comment!");
+    });
+
+
+
 
 
 
